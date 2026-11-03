@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function () {
+        try {
+          var desc =
+            Object.getOwnPropertyDescriptor(window, 'fetch') ||
+            Object.getOwnPropertyDescriptor(Window.prototype, 'fetch');
+          if (desc && desc.configurable) {
+            var currentFetch = window.fetch.bind(window);
+            Object.defineProperty(window, 'fetch', {
+              configurable: true,
+              enumerable: true,
+              get: function () {
+                return currentFetch;
+              },
+              set: function (fn) {
+                if (typeof fn === 'function') {
+                  currentFetch = fn;
+                }
+              },
+            });
+          }
+        } catch (e) {}
+
+        window.addEventListener(
+          'error',
+          function (event) {
+            if (
+              (event &&
+                event.filename &&
+                event.filename.indexOf('chrome-extension://') === 0) ||
+              (event &&
+                event.message &&
+                event.message.indexOf('Cannot set property fetch') !== -1)
+            ) {
+              event.stopImmediatePropagation();
+              event.preventDefault();
+              return false;
+            }
+          },
+          true
+        );
+      })();
+    </script>
+    <title>NIRT Renewable Energy — Get Up to ₹1,00,000 for Solar</title>
+    <meta name="description" content="Go solar with NIRT. From financial assistance and government subsidies to final rooftop solar installation across Tamil Nadu." />
+    <meta property="og:title" content="NIRT Renewable Energy — Get Up to ₹1,00,000 for Solar" />
+    <meta property="og:description" content="Go solar with NIRT. From financial assistance and government subsidies to final rooftop solar installation across Tamil Nadu." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/assets/aistudio/nirt_logo_dbbf2295.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/png" href="/assets/aistudio/nirt_logo_dbbf2295.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

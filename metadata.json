@@ -1,0 +1,6 @@
+{
+  "name": "Solarpro — Clean & Renewable Solar Energy",
+  "description": "Custom solar system design, high-efficiency solar panels, and home battery storage installed by certified professionals.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
