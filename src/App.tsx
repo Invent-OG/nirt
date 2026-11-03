@@ -21,7 +21,98 @@ import {
   Plus,
   X,
   Menu,
+  ChevronDown,
 } from 'lucide-react';
+
+const DISTRICTS = [
+  'Ariyalur',
+  'Chengalpattu',
+  'Chennai',
+  'Coimbatore',
+  'Cuddalore',
+  'Dharmapuri',
+  'Dindigul',
+  'Erode',
+  'Kallakurichi',
+  'Kanchipuram',
+  'Kanniyakumari',
+  'Karur',
+  'Krishnagiri',
+  'Madurai',
+  'Mayiladuthurai',
+  'Nagapattinam',
+  'Namakkal',
+  'Nilgiris',
+  'Perambalur',
+  'Pudukkottai',
+  'Ramanathapuram',
+  'Ranipet',
+  'Salem',
+  'Sivagangai',
+  'Tenkasi',
+  'Thanjavur',
+  'Theni',
+  'Thiruvarur',
+  'Thoothukudi',
+  'Tiruchirappalli',
+  'Tirunelveli',
+  'Tirupathur',
+  'Tiruppur',
+  'Tiruvallur',
+  'Tiruvannamalai',
+  'Vellore',
+  'Villupuram',
+  'Virudhunagar',
+  'Pondicherry',
+  'Others',
+];
+
+const CUSTOMER_AVATARS = [
+  { src: '/assets/solar/avatar-emily.png', name: 'Ananya R.' },
+  { src: '/assets/solar/avatar-billie.png', name: 'Karthik S.' },
+  { src: '/assets/solar/avatar-james.png', name: 'Vikram M.' },
+  { src: '/assets/solar/testimonial-center.png', name: 'Priya N.' },
+];
+
+function CustomerAvatarGroup({
+  variant = 'light',
+  count = 4,
+}: {
+  variant?: 'dark' | 'light';
+  count?: number;
+}) {
+  const isDark = variant === 'dark';
+  const sizeClass = isDark
+    ? 'w-[36px] h-[36px] sm:w-[40px] sm:h-[40px]'
+    : 'w-[40px] h-[40px] sm:w-[44px] sm:h-[44px]';
+  const ringClass = isDark
+    ? 'border-2 border-[#0D0D0D] bg-[#222222]'
+    : 'border-2 border-white bg-[#EDEDED] shadow-xs';
+
+  return (
+    <div
+      className="inline-flex items-center -space-x-2.5 sm:-space-x-3 shrink-0 select-none"
+      role="group"
+      aria-label="Happy customer avatars"
+    >
+      {CUSTOMER_AVATARS.slice(0, count).map((avatar, idx) => (
+        <div
+          key={avatar.name}
+          style={{ zIndex: idx + 1 }}
+          className={`relative ${sizeClass} rounded-full overflow-hidden ${ringClass} shrink-0 transition-transform duration-200 hover:-translate-y-0.5`}
+        >
+          <img
+            src={avatar.src}
+            alt={avatar.name}
+            referrerPolicy="no-referrer"
+            className="w-full h-full object-cover block"
+          />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 
 // Dot matrix data for the third bento card (14 columns, bottom-to-top)
 // 'D' = #193d3c (dark teal), 'G' = #9cfc6c (lime green), 'L' = #dcdcdc (light gray)
@@ -457,16 +548,33 @@ export default function App() {
               placeholder="Name"
               className="w-full min-w-0 rounded-full border border-[#E5E5E5] bg-white px-4 sm:px-5 py-3 sm:py-3.5 text-[14.5px] sm:text-[15px] text-[#0D0D0D] placeholder:text-[#7A7A7A] focus:outline-none focus:border-[#1E255E]"
             />
-            <input
-              type="text"
-              required
-              value={formData.district}
-              onChange={(e) =>
-                setFormData({ ...formData, district: e.target.value })
-              }
-              placeholder="District"
-              className="w-full min-w-0 rounded-full border border-[#E5E5E5] bg-white px-4 sm:px-5 py-3 sm:py-3.5 text-[14.5px] sm:text-[15px] text-[#0D0D0D] placeholder:text-[#7A7A7A] focus:outline-none focus:border-[#1E255E]"
-            />
+            <div className="relative w-full min-w-0">
+              <select
+                required
+                aria-label="District"
+                value={formData.district}
+                onChange={(e) =>
+                  setFormData({ ...formData, district: e.target.value })
+                }
+                className={`w-full min-w-0 appearance-none rounded-full border border-[#E5E5E5] bg-white pl-4 sm:pl-5 pr-10 py-3 sm:py-3.5 text-[14.5px] sm:text-[15px] focus:outline-none focus:border-[#1E255E] cursor-pointer ${
+                  formData.district ? 'text-[#0D0D0D]' : 'text-[#7A7A7A]'
+                }`}
+              >
+                <option value="" disabled>
+                  Select District
+                </option>
+                {DISTRICTS.map((district) => (
+                  <option
+                    key={district}
+                    value={district}
+                    className="text-[#0D0D0D] bg-white"
+                  >
+                    {district}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#7A7A7A]" />
+            </div>
             <input
               type="tel"
               required
@@ -582,12 +690,7 @@ export default function App() {
           <div className="rounded-[26px] sm:rounded-[30px] bg-[#0D0D0D] text-white p-6 sm:p-[34px] xl:p-[38px] flex flex-col justify-between lg:aspect-[444/518] min-h-[430px] sm:min-h-[480px]">
             {/* Top Row: Avatars + Pill */}
             <div className="flex items-center justify-between gap-2.5">
-              <img
-                src="/assets/solar/avatars-dark-card.png"
-                alt="Customer avatars"
-                referrerPolicy="no-referrer"
-                className="h-[38px] sm:h-[42px] w-auto object-contain rounded-full"
-              />
+              <CustomerAvatarGroup variant="dark" count={3} />
               <div className="inline-flex items-center gap-2 bg-[#1F1F1F] border border-white/10 rounded-full pl-3.5 sm:pl-4 pr-1.5 py-1.5 text-[12px] sm:text-[13px] text-white/90 whitespace-nowrap">
                 <span>Grid-Connected</span>
                 <span className="w-[24px] h-[24px] sm:w-[26px] sm:h-[26px] rounded-full bg-black/50 border border-white/15 inline-flex items-center justify-center">
@@ -1123,12 +1226,7 @@ export default function App() {
 
               {/* 4 Overlapping Customer Avatars + 5 Stars + 500+ Happy Customers */}
               <div className="flex items-center gap-3.5">
-                <img
-                  src="/assets/solar/avatars-happy-customers.png"
-                  alt="500+ Happy Customers"
-                  referrerPolicy="no-referrer"
-                  className="h-[42px] sm:h-[46px] w-auto object-contain"
-                />
+                <CustomerAvatarGroup variant="light" count={4} />
                 <div>
                   <div className="flex items-center gap-1 text-[#0D0D0D]">
                     {[...Array(5)].map((_, i) => (
@@ -1755,16 +1853,33 @@ export default function App() {
                 <label className="block text-[14px] sm:text-[14.5px] font-medium text-[#222222] mb-2">
                   District
                 </label>
-                <input
-                  type="text"
-                  required
-                  value={formData.district}
-                  onChange={(e) =>
-                    setFormData({ ...formData, district: e.target.value })
-                  }
-                  placeholder="Your district in Tamil Nadu"
-                  className="w-full rounded-full border border-[#ECECEC] bg-[#FAFAFA] px-5 py-3.5 text-[15px] text-[#0D0D0D] placeholder:text-[#A0A0A0] focus:outline-none focus:border-[#1E255E]"
-                />
+                <div className="relative w-full">
+                  <select
+                    required
+                    aria-label="District"
+                    value={formData.district}
+                    onChange={(e) =>
+                      setFormData({ ...formData, district: e.target.value })
+                    }
+                    className={`w-full appearance-none rounded-full border border-[#ECECEC] bg-[#FAFAFA] pl-5 pr-11 py-3.5 text-[15px] focus:outline-none focus:border-[#1E255E] cursor-pointer ${
+                      formData.district ? 'text-[#0D0D0D]' : 'text-[#A0A0A0]'
+                    }`}
+                  >
+                    <option value="" disabled>
+                      Select your district
+                    </option>
+                    {DISTRICTS.map((district) => (
+                      <option
+                        key={district}
+                        value={district}
+                        className="text-[#0D0D0D] bg-white"
+                      >
+                        {district}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-[#7A7A7A]" />
+                </div>
               </div>
 
               <div>
@@ -2047,19 +2162,38 @@ export default function App() {
                     <label className="block text-[10px] font-medium text-[#222222] mb-1">
                       District
                     </label>
-                    <input
-                      type="text"
-                      required
-                      value={popupFormData.district}
-                      onChange={(e) =>
-                        setPopupFormData({
-                          ...popupFormData,
-                          district: e.target.value,
-                        })
-                      }
-                      placeholder="District in Tamil Nadu"
-                      className="w-full rounded-full border border-[#E5E5E5] bg-[#FAFAFA] px-4 py-2 text-[11px] text-[#0D0D0D] focus:outline-none focus:border-[#1E255E]"
-                    />
+                    <div className="relative w-full">
+                      <select
+                        required
+                        aria-label="District"
+                        value={popupFormData.district}
+                        onChange={(e) =>
+                          setPopupFormData({
+                            ...popupFormData,
+                            district: e.target.value,
+                          })
+                        }
+                        className={`w-full appearance-none rounded-full border border-[#E5E5E5] bg-[#FAFAFA] pl-4 pr-8 py-2 text-[11px] focus:outline-none focus:border-[#1E255E] cursor-pointer ${
+                          popupFormData.district
+                            ? 'text-[#0D0D0D]'
+                            : 'text-[#7A7A7A]'
+                        }`}
+                      >
+                        <option value="" disabled>
+                          Select District
+                        </option>
+                        {DISTRICTS.map((district) => (
+                          <option
+                            key={district}
+                            value={district}
+                            className="text-[#0D0D0D] bg-white"
+                          >
+                            {district}
+                          </option>
+                        ))}
+                      </select>
+                      <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#7A7A7A]" />
+                    </div>
                   </div>
 
                   <div>
