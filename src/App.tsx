@@ -68,10 +68,10 @@ const DISTRICTS = [
 ];
 
 const CUSTOMER_AVATARS = [
-  { src: '/assets/solar/avatar-emily.png', name: 'Ananya R.' },
-  { src: '/assets/solar/avatar-billie.png', name: 'Karthik S.' },
-  { src: '/assets/solar/avatar-james.png', name: 'Vikram M.' },
-  { src: '/assets/solar/testimonial-center.png', name: 'Priya N.' },
+  { initial: 'NR', name: 'Nataraj A.', bg: 'bg-[#1E255E]' },
+  { initial: 'KR', name: 'Kirit Raja', bg: 'bg-[#76B82A]' },
+  { initial: 'RS', name: 'Raja R. S.', bg: 'bg-[#0D0D0D]' },
+  { initial: 'PK', name: 'Priya K.', bg: 'bg-[#2E5B88]' },
 ];
 
 function CustomerAvatarGroup({
@@ -86,8 +86,8 @@ function CustomerAvatarGroup({
     ? 'w-[36px] h-[36px] sm:w-[40px] sm:h-[40px]'
     : 'w-[40px] h-[40px] sm:w-[44px] sm:h-[44px]';
   const ringClass = isDark
-    ? 'border-2 border-[#0D0D0D] bg-[#222222]'
-    : 'border-2 border-white bg-[#EDEDED] shadow-xs';
+    ? 'border-2 border-[#0D0D0D]'
+    : 'border-2 border-white shadow-xs';
 
   return (
     <div
@@ -99,20 +99,14 @@ function CustomerAvatarGroup({
         <div
           key={avatar.name}
           style={{ zIndex: idx + 1 }}
-          className={`relative ${sizeClass} rounded-full overflow-hidden ${ringClass} shrink-0 transition-transform duration-200 hover:-translate-y-0.5`}
+          className={`relative ${sizeClass} rounded-full overflow-hidden ${ringClass} ${avatar.bg} text-white font-semibold text-[12px] sm:text-[13px] flex items-center justify-center shrink-0 transition-transform duration-200 hover:-translate-y-0.5`}
         >
-          <img
-            src={avatar.src}
-            alt={avatar.name}
-            referrerPolicy="no-referrer"
-            className="w-full h-full object-cover block"
-          />
+          {avatar.initial}
         </div>
       ))}
     </div>
   );
 }
-
 
 // Dot matrix data for the third bento card (14 columns, bottom-to-top)
 // 'D' = #193d3c (dark teal), 'G' = #9cfc6c (lime green), 'L' = #dcdcdc (light gray)
@@ -138,37 +132,37 @@ const DOT_CHART_COLUMNS: Array<{
 
 const PROJECTS = [
   {
-    title: 'Residential Solar',
+    title: 'Residential Rooftop Solar',
     rating: '4.9',
     description:
-      'Years of experience, a portfolio of successful installations and trust built with every customer.',
+      'High-efficiency rooftop solar panel installation delivering clean daytime power and consistent monthly savings.',
     installedCapacity: '3 kW',
     location: 'Chennai, Tamil Nadu',
     projectType: 'Residential Solar',
     subsidyAvailed: '₹1,00,000',
-    image: '/assets/solar/project-residential.png',
+    image: '/assets/aistudio/portfolio_1_d391dbc6.webp',
   },
   {
-    title: 'Residential Solar',
+    title: 'Elevated Terrace Solar Structure',
     rating: '4.9',
     description:
-      'Years of experience, a portfolio of successful installations and trust built with every customer.',
+      'Custom elevated mounting structure preserving complete rooftop usable space while generating green electricity.',
     installedCapacity: '2 kW',
     location: 'Coimbatore, Tamil Nadu',
-    projectType: 'Residential Solar',
-    subsidyAvailed: '₹70,000',
-    image: '/assets/solar/testimonial-center.png',
+    projectType: 'Elevated Rooftop',
+    subsidyAvailed: '₹75,000',
+    image: '/assets/aistudio/portfolio_2__8c66b6ad.webp',
   },
   {
-    title: 'Residential Solar',
+    title: 'Independent Villa Solar System',
     rating: '4.8',
     description:
-      'Years of experience, a portfolio of successful installations and trust built with every customer.',
-    installedCapacity: '5 kW',
+      'Turnkey grid-connected rooftop solar installation powering heavy household loads and feeding excess energy to grid.',
+    installedCapacity: '3 kW',
     location: 'Madurai, Tamil Nadu',
     projectType: 'Residential Solar',
     subsidyAvailed: '₹1,00,000',
-    image: '/assets/solar/service-commercial.png',
+    image: '/assets/aistudio/portfolio_3_4d405541.webp',
   },
 ];
 
@@ -229,12 +223,12 @@ function SolarproLogo() {
 
 function HeroNirtBackdrop() {
   return (
-    <div className="absolute inset-0 w-full h-full">
+    <div className="absolute inset-0 w-full h-full overflow-hidden">
       <img
-        src="/assets/aistudio/image_59327cd1.png"
-        alt="NIRT Renewable Energy wind turbines and solar landscape"
+        src="/assets/aistudio/main_566af4e0.webp"
+        alt="NIRT Renewable Energy Solar Rooftop"
         referrerPolicy="no-referrer"
-        className="w-full h-full object-cover object-[38%_top] sm:object-center block"
+        className="w-full h-full object-cover object-top sm:object-center block filter brightness-[0.82] contrast-[1.04]"
       />
     </div>
   );
@@ -659,15 +653,15 @@ export default function App() {
         {/* 3-Column Bento Grid (responsive across mobile 1-col, tablet 2-col, desktop 3-col) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-[28px]">
           {/* Card 1: 1–3 kW+ System capacity */}
-          <div className="relative rounded-[26px] sm:rounded-[30px] overflow-hidden lg:aspect-[444/518] min-h-[430px] sm:min-h-[480px] bg-[#6FA6BF] select-none">
+          <div className="relative rounded-[26px] sm:rounded-[30px] overflow-hidden lg:aspect-[444/518] min-h-[430px] sm:min-h-[480px] bg-[#6FA6BF] select-none shadow-sm">
             <img
-              src="/assets/solar/card-100-clean.png"
-              alt="1–3 kW+ System capacity"
+              src="/assets/aistudio/system_capacity_e25756bf.webp"
+              alt="1–3 kW+ System capacity rooftop solar array in Tamil Nadu"
               referrerPolicy="no-referrer"
               className="w-full h-full object-cover block"
             />
             {/* Top-Left Metric + Top-Right Frosted Badge (matching screenshot with unobstructed bottom photo) */}
-            <div className="absolute inset-0 p-6 sm:p-[34px] xl:p-[38px] flex flex-col justify-start z-10">
+            <div className="absolute inset-0 p-6 sm:p-[34px] xl:p-[38px] flex flex-col justify-start z-10 bg-gradient-to-b from-black/55 via-black/20 to-transparent">
               <div className="flex flex-wrap items-start justify-between gap-2.5">
                 <div className="text-white font-light text-[44px] sm:text-[54px] xl:text-[64px] leading-[0.96] tracking-[-0.03em] tabular-nums">
                   1–3 kW+
@@ -686,12 +680,12 @@ export default function App() {
             </div>
           </div>
 
-          {/* Card 2: Dark #0D0D0D Card (25 years Potential system lifespan) */}
-          <div className="rounded-[26px] sm:rounded-[30px] bg-[#0D0D0D] text-white p-6 sm:p-[34px] xl:p-[38px] flex flex-col justify-between lg:aspect-[444/518] min-h-[430px] sm:min-h-[480px]">
+          {/* Card 2: Solid Black Card with Lifespan Metric */}
+          <div className="relative rounded-[26px] sm:rounded-[30px] overflow-hidden bg-black text-white p-6 sm:p-[34px] xl:p-[38px] flex flex-col justify-between lg:aspect-[444/518] min-h-[430px] sm:min-h-[480px] shadow-sm border border-neutral-800/60">
             {/* Top Row: Avatars + Pill */}
-            <div className="flex items-center justify-between gap-2.5">
+            <div className="relative z-10 flex items-center justify-between gap-2.5">
               <CustomerAvatarGroup variant="dark" count={3} />
-              <div className="inline-flex items-center gap-2 bg-[#1F1F1F] border border-white/10 rounded-full pl-3.5 sm:pl-4 pr-1.5 py-1.5 text-[12px] sm:text-[13px] text-white/90 whitespace-nowrap">
+              <div className="inline-flex items-center gap-2 bg-[#1F1F1F]/90 backdrop-blur-sm border border-white/10 rounded-full pl-3.5 sm:pl-4 pr-1.5 py-1.5 text-[12px] sm:text-[13px] text-white/90 whitespace-nowrap">
                 <span>Grid-Connected</span>
                 <span className="w-[24px] h-[24px] sm:w-[26px] sm:h-[26px] rounded-full bg-black/50 border border-white/15 inline-flex items-center justify-center">
                   <Globe className="w-3.5 h-3.5 text-white/90" />
@@ -700,13 +694,13 @@ export default function App() {
             </div>
 
             {/* Middle Copy */}
-            <p className="text-[19px] sm:text-[21px] xl:text-[23px] leading-[1.38] text-white font-normal tracking-[-0.01em] my-auto py-4">
+            <p className="relative z-10 text-[19px] sm:text-[21px] xl:text-[23px] leading-[1.38] text-white font-normal tracking-[-0.01em] my-auto py-4">
               Grid-connected rooftop solar systems can have a lifespan of 25
               years. Component warranties and actual performance vary.
             </p>
 
             {/* Bottom Metric: 25 years */}
-            <div>
+            <div className="relative z-10">
               <div className="text-[48px] sm:text-[58px] xl:text-[68px] font-light leading-none tracking-[-0.03em] text-white tabular-nums">
                 25 years
               </div>
@@ -785,24 +779,24 @@ export default function App() {
     const subsidyTiers = [
       {
         num: '01',
-        title: '1 kW',
+        title: '1 kW System',
         amount: '₹35,000',
         desc: 'Combined Central & Tamil Nadu State Government solar subsidy for eligible 1 kW residential rooftop systems.',
-        image: '/assets/solar/service-residential.png',
+        image: '/assets/aistudio/1kw_35000_021378ec.webp',
       },
       {
         num: '02',
-        title: '2 kW',
-        amount: '₹70,000',
+        title: '2 kW System',
+        amount: '₹75,000',
         desc: 'Combined Central & Tamil Nadu State Government solar subsidy for eligible 2 kW residential rooftop systems.',
-        image: '/assets/solar/service-commercial.png',
+        image: '/assets/aistudio/2kw_75000_bc50c565.webp',
       },
       {
         num: '03',
         title: '3 kW and above',
         amount: '₹1,00,000',
         desc: 'Maximum combined Central & Tamil Nadu State Government subsidy for eligible 3 kW+ residential systems.',
-        image: '/assets/solar/service-battery.png',
+        image: '/assets/aistudio/3kw_1lakh_d50a4608.webp',
       },
     ];
 
@@ -812,7 +806,7 @@ export default function App() {
         className="w-full bg-[#F8F8F8] py-[56px] sm:py-[72px] lg:py-[84px]"
       >
         <div className="w-[90%] sm:w-[88%] lg:w-[86%] max-w-[1380px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-12 items-stretch">
-          {/* Left Column (5 cols): Section Heading + Bottom Thumbnail Pair */}
+          {/* Left Column (5 cols): Section Heading + Bottom Thumbnail Pair + Portal Subsidy Badge */}
           <div className="lg:col-span-5 flex flex-col justify-between">
             <div>
               <span className="inline-block bg-white text-[#4A4A4A] text-[14px] sm:text-[15px] font-normal px-[20px] sm:px-[22px] py-[9px] sm:py-[10px] rounded-full shadow-[0_1px_3px_rgba(0,0,0,0.03)] mb-[20px] sm:mb-[24px]">
@@ -829,20 +823,32 @@ export default function App() {
               </p>
             </div>
 
-            {/* Bottom-Left Pair of Rounded Solar Thumbnails */}
-            <div className="mt-7 sm:mt-10 lg:mt-0 grid grid-cols-2 sm:flex items-center gap-3 sm:gap-4">
-              <img
-                src="/assets/solar/service-thumb-1.png"
-                alt="Solar field array at sunset"
-                referrerPolicy="no-referrer"
-                className="w-full sm:w-[175px] h-[145px] sm:h-[172px] rounded-[20px] sm:rounded-[22px] object-cover shrink-0"
-              />
-              <img
-                src="/assets/solar/service-thumb-2.png"
-                alt="Technician inspecting rooftop solar panel"
-                referrerPolicy="no-referrer"
-                className="w-full sm:w-[210px] h-[145px] sm:h-[172px] rounded-[20px] sm:rounded-[22px] object-cover shrink-0"
-              />
+            {/* Bottom-Left Visuals: 2 Elevated Terrace Photos + TN Government Portal Card */}
+            <div className="mt-7 sm:mt-10 lg:mt-0 flex flex-col gap-4">
+              <div className="grid grid-cols-2 items-center gap-3 sm:gap-4">
+                <div className="relative rounded-[20px] sm:rounded-[22px] overflow-hidden shadow-xs group">
+                  <img
+                    src="/assets/aistudio/combined_1_9a8f946e.webp"
+                    alt="Elevated solar structure installation in Tamil Nadu"
+                    referrerPolicy="no-referrer"
+                    className="w-full h-[145px] sm:h-[168px] rounded-[20px] sm:rounded-[22px] object-cover shrink-0 transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent p-2.5 text-[11.5px] text-white font-medium">
+                    Elevated Canopy
+                  </div>
+                </div>
+                <div className="relative rounded-[20px] sm:rounded-[22px] overflow-hidden shadow-xs group">
+                  <img
+                    src="/assets/aistudio/combined_2_3a88dd44.webp"
+                    alt="Terrace rooftop usable solar pergola structure"
+                    referrerPolicy="no-referrer"
+                    className="w-full h-[145px] sm:h-[168px] rounded-[20px] sm:rounded-[22px] object-cover shrink-0 transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent p-2.5 text-[11.5px] text-white font-medium">
+                    Terrace Usability
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -1065,6 +1071,16 @@ export default function App() {
       className="w-full bg-[#F8F8F8] py-[56px] sm:py-[72px] lg:py-[84px]"
     >
       <div className="w-[90%] sm:w-[88%] lg:w-[86%] max-w-[1380px] mx-auto">
+        {/* Customer Electricity Savings Milestone Banner */}
+        <div className="mb-9 sm:mb-12 rounded-[20px] sm:rounded-[26px] overflow-hidden border border-[#E2E4E8] bg-white shadow-sm group">
+          <img
+            src="/assets/aistudio/sub_41e0b6e2.webp"
+            alt="₹25 Lakh+ In Customer Electricity Savings - NIRT Renewable Energy"
+            referrerPolicy="no-referrer"
+            className="w-full h-auto max-h-[300px] sm:max-h-[360px] object-cover block transition-transform duration-700 group-hover:scale-[1.01]"
+          />
+        </div>
+
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-5 sm:gap-6 mb-9 sm:mb-12">
           <div>
             <span className="inline-block bg-white text-[#4A4A4A] text-[14px] sm:text-[15px] font-normal px-[20px] sm:px-[22px] py-[9px] sm:py-[10px] rounded-full shadow-[0_1px_3px_rgba(0,0,0,0.03)] mb-[20px] sm:mb-[24px]">
@@ -1180,24 +1196,39 @@ export default function App() {
       <div className="w-[90%] sm:w-[88%] lg:w-[86%] max-w-[1380px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 items-stretch">
         {/* Left Column (4 cols): 3 Solar Photos (3-up grid on tablet, stacked on desktop) */}
         <div className="lg:col-span-4 grid grid-cols-1 sm:grid-cols-3 lg:flex lg:flex-col justify-between gap-4 sm:gap-5">
-          <img
-            src="/assets/solar/helping-1.png"
-            alt="Sunlit solar panel array"
-            referrerPolicy="no-referrer"
-            className="w-full h-[180px] sm:h-[160px] lg:h-[196px] rounded-[20px] sm:rounded-[24px] object-cover block"
-          />
-          <img
-            src="/assets/solar/helping-2.png"
-            alt="Solar panels with wind turbines"
-            referrerPolicy="no-referrer"
-            className="w-full h-[180px] sm:h-[160px] lg:h-[196px] rounded-[20px] sm:rounded-[24px] object-cover block"
-          />
-          <img
-            src="/assets/solar/helping-3.png"
-            alt="Aerial view of solar panels on lush greenery"
-            referrerPolicy="no-referrer"
-            className="w-full h-[180px] sm:h-[160px] lg:h-[196px] rounded-[20px] sm:rounded-[24px] object-cover block"
-          />
+          <div className="relative rounded-[20px] sm:rounded-[24px] overflow-hidden group shadow-xs">
+            <img
+              src="/assets/aistudio/helping_people1__417fe7f0.webp"
+              alt="Two-storey family home with rooftop solar panel array"
+              referrerPolicy="no-referrer"
+              className="w-full h-[180px] sm:h-[160px] lg:h-[196px] object-cover block transition-transform duration-500 group-hover:scale-105"
+            />
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3 text-[12.5px] text-white font-medium">
+              Residential Villa Solar
+            </div>
+          </div>
+          <div className="relative rounded-[20px] sm:rounded-[24px] overflow-hidden group shadow-xs">
+            <img
+              src="/assets/aistudio/helping_people_2_d9cbd71c.webp"
+              alt="Immediate savings on Tamil Nadu electricity consumption"
+              referrerPolicy="no-referrer"
+              className="w-full h-[180px] sm:h-[160px] lg:h-[196px] object-cover block transition-transform duration-500 group-hover:scale-105"
+            />
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3 text-[12.5px] text-white font-medium">
+              Daily EB Bill Savings
+            </div>
+          </div>
+          <div className="relative rounded-[20px] sm:rounded-[24px] overflow-hidden group shadow-xs">
+            <img
+              src="/assets/aistudio/helping_people_3_e2a5b107.webp"
+              alt="NIRT solar engineer and happy homeowner handshake on terrace"
+              referrerPolicy="no-referrer"
+              className="w-full h-[180px] sm:h-[160px] lg:h-[196px] object-cover block transition-transform duration-500 group-hover:scale-105"
+            />
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3 text-[12.5px] text-white font-medium">
+              Trusted Engineering Team
+            </div>
+          </div>
         </div>
 
         {/* Right Column (8 cols): Heading + CTA/Avatars Row + 2x2 Feature Grid */}
@@ -1598,12 +1629,9 @@ export default function App() {
 
               <div className="mt-5 flex items-center justify-between gap-2">
                 <div className="flex items-center gap-3">
-                  <img
-                    src="/assets/solar/avatar-emily.png"
-                    alt="Nataraj A"
-                    referrerPolicy="no-referrer"
-                    className="w-11 h-11 rounded-full object-cover shrink-0"
-                  />
+                  <div className="w-11 h-11 rounded-full bg-[#1E255E] text-white flex items-center justify-center font-semibold text-[14px] shrink-0 shadow-xs">
+                    NA
+                  </div>
                   <div>
                     <div className="text-[15px] font-semibold text-[#0D0D0D] leading-tight">
                       Nataraj A
@@ -1621,11 +1649,11 @@ export default function App() {
             </div>
           </div>
 
-          {/* Center Column: Architectural Solar Home Image */}
-          <div className="md:col-span-2 lg:col-span-1 rounded-[24px] sm:rounded-[26px] overflow-hidden min-h-[280px] sm:min-h-[340px] lg:min-h-0 order-first lg:order-none">
+          {/* Center Column: 5-Star Rating & Solar Power Satisfaction */}
+          <div className="md:col-span-2 lg:col-span-1 rounded-[24px] sm:rounded-[26px] overflow-hidden min-h-[300px] sm:min-h-[360px] lg:min-h-0 order-first lg:order-none relative bg-[#091428] shadow-md flex items-center justify-center">
             <img
-              src="/assets/solar/testimonial-center.png"
-              alt="Modern solar powered residence surrounded by trees"
+              src="/assets/aistudio/review__d4f6ce9c.webp"
+              alt="5-Star Verified Customer Reviews & High Performance Solar Rooftops"
               referrerPolicy="no-referrer"
               className="w-full h-full object-cover block"
             />
@@ -1642,12 +1670,9 @@ export default function App() {
 
               <div className="mt-5 flex items-center justify-between gap-2">
                 <div className="flex items-center gap-3">
-                  <img
-                    src="/assets/solar/avatar-billie.png"
-                    alt="KIRIT RAJA"
-                    referrerPolicy="no-referrer"
-                    className="w-11 h-11 rounded-full object-cover shrink-0"
-                  />
+                  <div className="w-11 h-11 rounded-full bg-[#76B82A] text-white flex items-center justify-center font-semibold text-[14px] shrink-0 shadow-xs">
+                    KR
+                  </div>
                   <div>
                     <div className="text-[15px] font-semibold text-[#0D0D0D] leading-tight">
                       KIRIT RAJA
@@ -1673,12 +1698,9 @@ export default function App() {
 
               <div className="mt-5 flex items-center justify-between gap-2">
                 <div className="flex items-center gap-3">
-                  <img
-                    src="/assets/solar/avatar-james.png"
-                    alt="RAJA R S"
-                    referrerPolicy="no-referrer"
-                    className="w-11 h-11 rounded-full object-cover shrink-0"
-                  />
+                  <div className="w-11 h-11 rounded-full bg-[#0D0D0D] text-white flex items-center justify-center font-semibold text-[14px] shrink-0 shadow-xs">
+                    RS
+                  </div>
                   <div>
                     <div className="text-[15px] font-semibold text-[#0D0D0D] leading-tight">
                       RAJA R S
