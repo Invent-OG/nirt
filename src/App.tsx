@@ -137,9 +137,9 @@ const PROJECTS = [
     description:
       'High-efficiency rooftop solar panel installation delivering clean daytime power and consistent monthly savings.',
     installedCapacity: '3 kW',
-    location: 'Chennai, Tamil Nadu',
+    location: 'Salem, Tamil Nadu',
     projectType: 'Residential Solar',
-    subsidyAvailed: '₹1,00,000',
+    subsidyAvailed: '₹78,000',
     image: '/assets/aistudio/portfolio_1_d391dbc6.webp',
   },
   {
@@ -147,10 +147,10 @@ const PROJECTS = [
     rating: '4.9',
     description:
       'Custom elevated mounting structure preserving complete rooftop usable space while generating green electricity.',
-    installedCapacity: '2 kW',
-    location: 'Coimbatore, Tamil Nadu',
-    projectType: 'Elevated Rooftop',
-    subsidyAvailed: '₹75,000',
+    installedCapacity: '5 kW',
+    location: 'Salem, Tamil Nadu',
+    projectType: 'Rooftop Solar',
+    subsidyAvailed: '₹78,000',
     image: '/assets/aistudio/portfolio_2__8c66b6ad.webp',
   },
   {
@@ -158,10 +158,10 @@ const PROJECTS = [
     rating: '4.8',
     description:
       'Turnkey grid-connected rooftop solar installation powering heavy household loads and feeding excess energy to grid.',
-    installedCapacity: '3 kW',
-    location: 'Madurai, Tamil Nadu',
+    installedCapacity: '6 kW',
+    location: 'Salem, Tamil Nadu',
     projectType: 'Residential Solar',
-    subsidyAvailed: '₹1,00,000',
+    subsidyAvailed: '₹78,000',
     image: '/assets/aistudio/portfolio_3_4d405541.webp',
   },
 ];
@@ -215,7 +215,7 @@ function SolarproLogo() {
         src="/assets/aistudio/nirt_logo_dbbf2295.png"
         alt="NIRT Renewable Energy"
         referrerPolicy="no-referrer"
-        className="h-[46px] sm:h-[56px] lg:h-[64px] w-auto object-contain block"
+        className="h-[58px] sm:h-[72px] lg:h-[84px] xl:h-[92px] w-auto object-contain block transition-transform duration-200 hover:scale-[1.02]"
       />
     </a>
   );
@@ -224,11 +224,19 @@ function SolarproLogo() {
 function HeroNirtBackdrop() {
   return (
     <div className="absolute inset-0 w-full h-full overflow-hidden">
+      {/* Mobile view hero image */}
+      <img
+        src="/assets/aistudio/main_phn_3527aeac.webp"
+        alt="NIRT Renewable Energy Solar Rooftop"
+        referrerPolicy="no-referrer"
+        className="block sm:hidden w-full h-full object-cover object-center filter brightness-[0.85] contrast-[1.02]"
+      />
+      {/* Tablet & Desktop view hero image */}
       <img
         src="/assets/aistudio/main_566af4e0.webp"
         alt="NIRT Renewable Energy Solar Rooftop"
         referrerPolicy="no-referrer"
-        className="w-full h-full object-cover object-top sm:object-center block filter brightness-[0.82] contrast-[1.04]"
+        className="hidden sm:block w-full h-full object-cover object-top sm:object-center filter brightness-[0.82] contrast-[1.04]"
       />
     </div>
   );
@@ -375,7 +383,7 @@ export default function App() {
   // SECTION 1: TOP NAVBAR
   // ============================================================================
   const renderNavbar = () => (
-    <header className="w-full bg-white py-[14px] sm:py-[18px] lg:py-[22px] border-b border-black/[0.04] sticky top-0 z-40">
+    <header className="w-full bg-white py-[10px] sm:py-[12px] lg:py-[14px] border-b border-black/[0.04] sticky top-0 z-40">
       <div className="w-[90%] sm:w-[88%] lg:w-[86%] max-w-[1380px] mx-auto flex items-center justify-between gap-4 lg:gap-8">
         {/* Zone 1: Brand Wordmark */}
         <SolarproLogo />
@@ -527,11 +535,28 @@ export default function App() {
             </div>
           </div>
 
-          {/* PDF Page 1 Quick Estimate Form Bar (Name, District, Contact number, Bi monthly bill, CTA: Get My solar estimate) */}
+          {/* PDF Page 1 Quick Estimate Form Bar (Highlighted with glowing border & eligibility badge) */}
           <form
             onSubmit={handleFormSubmit}
-            className="mt-5 sm:mt-7 lg:mt-8 bg-white/95 backdrop-blur-md rounded-[22px] sm:rounded-[24px] p-3.5 sm:p-5 shadow-[0_14px_36px_rgba(0,0,0,0.2)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_1fr_auto] gap-3 sm:gap-3.5 items-center"
+            className="mt-5 sm:mt-7 lg:mt-8 bg-white/98 backdrop-blur-xl rounded-[24px] sm:rounded-[28px] p-4 sm:p-5 lg:p-6 shadow-[0_24px_70px_rgba(0,0,0,0.38),0_0_0_1px_rgba(255,255,255,0.9),0_0_40px_rgba(255,255,255,0.35)] border-2 border-white ring-4 ring-white/25 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_1fr_auto] gap-3 sm:gap-3.5 items-center"
           >
+            {/* Form Highlight Header Banner - Mobile Responsive */}
+            <div className="col-span-1 sm:col-span-2 lg:col-span-full flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2.5 mb-0.5 border-b border-black/5 w-full">
+              <div className="flex flex-col sm:flex-row sm:items-center items-start gap-1.5 sm:gap-2.5 w-full sm:w-auto">
+                <span className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-[#1E255E] text-white text-[11.5px] sm:text-[13px] font-medium tracking-tight shadow-xs shrink-0 whitespace-nowrap">
+                  <Zap className="w-3.5 h-3.5 fill-[#76B82A] text-[#76B82A] shrink-0" />
+                  Quick Solar Estimate
+                </span>
+                <span className="text-[12px] sm:text-[13.5px] text-[#4A4A4A] font-medium leading-snug">
+                  Check PM Surya Ghar &amp; TN subsidy eligibility in 60 seconds
+                </span>
+              </div>
+              <span className="hidden sm:inline-flex items-center gap-1.5 text-[12px] font-semibold text-[#1E255E] bg-[#1E255E]/8 px-2.5 py-0.5 rounded-full shrink-0">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#76B82A] animate-pulse" />
+                Free Feasibility Report
+              </span>
+            </div>
+
             <input
               type="text"
               required
@@ -540,7 +565,7 @@ export default function App() {
                 setFormData({ ...formData, name: e.target.value })
               }
               placeholder="Name"
-              className="w-full min-w-0 rounded-full border border-[#E5E5E5] bg-white px-4 sm:px-5 py-3 sm:py-3.5 text-[14.5px] sm:text-[15px] text-[#0D0D0D] placeholder:text-[#7A7A7A] focus:outline-none focus:border-[#1E255E]"
+              className="w-full min-w-0 rounded-full border-2 border-[#E2E5EA] bg-[#F8F9FA] hover:bg-white focus:bg-white px-4 sm:px-5 py-3 sm:py-3.5 text-[14.5px] sm:text-[15px] font-medium text-[#0D0D0D] placeholder:text-[#7A7A7A] focus:outline-none focus:border-[#1E255E] focus:ring-4 focus:ring-[#1E255E]/10 transition-all"
             />
             <div className="relative w-full min-w-0">
               <select
@@ -550,7 +575,7 @@ export default function App() {
                 onChange={(e) =>
                   setFormData({ ...formData, district: e.target.value })
                 }
-                className={`w-full min-w-0 appearance-none rounded-full border border-[#E5E5E5] bg-white pl-4 sm:pl-5 pr-10 py-3 sm:py-3.5 text-[14.5px] sm:text-[15px] focus:outline-none focus:border-[#1E255E] cursor-pointer ${
+                className={`w-full min-w-0 appearance-none rounded-full border-2 border-[#E2E5EA] bg-[#F8F9FA] hover:bg-white focus:bg-white pl-4 sm:pl-5 pr-10 py-3 sm:py-3.5 text-[14.5px] sm:text-[15px] font-medium focus:outline-none focus:border-[#1E255E] focus:ring-4 focus:ring-[#1E255E]/10 transition-all cursor-pointer ${
                   formData.district ? 'text-[#0D0D0D]' : 'text-[#7A7A7A]'
                 }`}
               >
@@ -561,7 +586,7 @@ export default function App() {
                   <option
                     key={district}
                     value={district}
-                    className="text-[#0D0D0D] bg-white"
+                    className="text-[#0D0D0D] bg-white font-normal"
                   >
                     {district}
                   </option>
@@ -577,7 +602,7 @@ export default function App() {
                 setFormData({ ...formData, contactNumber: e.target.value })
               }
               placeholder="Contact number"
-              className="w-full min-w-0 rounded-full border border-[#E5E5E5] bg-white px-4 sm:px-5 py-3 sm:py-3.5 text-[14.5px] sm:text-[15px] text-[#0D0D0D] placeholder:text-[#7A7A7A] focus:outline-none focus:border-[#1E255E]"
+              className="w-full min-w-0 rounded-full border-2 border-[#E2E5EA] bg-[#F8F9FA] hover:bg-white focus:bg-white px-4 sm:px-5 py-3 sm:py-3.5 text-[14.5px] sm:text-[15px] font-medium text-[#0D0D0D] placeholder:text-[#7A7A7A] focus:outline-none focus:border-[#1E255E] focus:ring-4 focus:ring-[#1E255E]/10 transition-all"
             />
             <input
               type="text"
@@ -587,18 +612,18 @@ export default function App() {
                 setFormData({ ...formData, biMonthlyBill: e.target.value })
               }
               placeholder="Bi monthly bill (₹)"
-              className="w-full min-w-0 rounded-full border border-[#E5E5E5] bg-white px-4 sm:px-5 py-3 sm:py-3.5 text-[14.5px] sm:text-[15px] text-[#0D0D0D] placeholder:text-[#7A7A7A] focus:outline-none focus:border-[#1E255E]"
+              className="w-full min-w-0 rounded-full border-2 border-[#E2E5EA] bg-[#F8F9FA] hover:bg-white focus:bg-white px-4 sm:px-5 py-3 sm:py-3.5 text-[14.5px] sm:text-[15px] font-medium text-[#0D0D0D] placeholder:text-[#7A7A7A] focus:outline-none focus:border-[#1E255E] focus:ring-4 focus:ring-[#1E255E]/10 transition-all"
             />
             <button
               type="submit"
-              className="group relative w-full sm:col-span-2 lg:col-span-1 lg:w-auto inline-flex items-center justify-center bg-[#0D0D0D] hover:bg-[#222222] text-white rounded-full pl-[24px] pr-[54px] sm:pl-[26px] sm:pr-[58px] py-[13px] sm:py-[13.5px] text-[15px] sm:text-[15.5px] font-medium transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] whitespace-nowrap shrink-0 cursor-pointer"
+              className="group relative w-full sm:col-span-2 lg:col-span-1 lg:w-auto inline-flex items-center justify-center bg-[#1E255E] hover:bg-[#14193F] text-white rounded-full pl-[24px] pr-[54px] sm:pl-[26px] sm:pr-[58px] py-[13.5px] sm:py-[14px] text-[15px] sm:text-[15.5px] font-medium shadow-[0_8px_20px_rgba(30,37,94,0.32)] hover:shadow-[0_10px_26px_rgba(30,37,94,0.42)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] whitespace-nowrap shrink-0 cursor-pointer"
             >
               <span className="transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-[30px] sm:group-hover:translate-x-[34px]">
                 {formStatus === 'submitted'
                   ? 'Estimate Requested ✓'
                   : 'Get My solar estimate'}
               </span>
-              <span className="absolute right-[7px] group-hover:right-[calc(100%-45px)] top-1/2 -translate-y-1/2 w-[36px] h-[36px] sm:w-[38px] sm:h-[38px] rounded-full bg-white text-[#0D0D0D] inline-flex items-center justify-center shrink-0 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:rotate-45">
+              <span className="absolute right-[7px] group-hover:right-[calc(100%-45px)] top-1/2 -translate-y-1/2 w-[36px] h-[36px] sm:w-[38px] sm:h-[38px] rounded-full bg-white text-[#1E255E] inline-flex items-center justify-center shrink-0 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:rotate-45">
                 <ArrowUpRight className="w-4.5 h-4.5 stroke-[2.2]" />
               </span>
             </button>
@@ -852,12 +877,21 @@ export default function App() {
             </div>
           </div>
 
-          {/* Right Column (7 cols): 3 Stacked Subsidy Tier Cards (1 kW, 2 kW, 3 kW and above) */}
+          {/* Right Column (7 cols): 3 Stacked Subsidy Tier Cards (1 kW, 2 kW, 3 kW and above) with Scroll Trigger */}
           <div className="lg:col-span-7 flex flex-col gap-5 sm:gap-[24px]">
-            {subsidyTiers.map((tier) => (
-              <div
+            {subsidyTiers.map((tier, idx) => (
+              <motion.div
                 key={tier.num}
-                className="bg-white rounded-[24px] sm:rounded-[28px] p-5 sm:p-[28px] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 sm:gap-6 shadow-[0_1px_3px_rgba(0,0,0,0.02)]"
+                initial={{ opacity: 0, y: 36, scale: 0.98 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{
+                  duration: 0.65,
+                  delay: idx * 0.15,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                whileHover={{ y: -4, transition: { duration: 0.25 } }}
+                className="group bg-white rounded-[24px] sm:rounded-[28px] p-5 sm:p-[28px] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 sm:gap-6 shadow-[0_1px_3px_rgba(0,0,0,0.02)] hover:shadow-[0_14px_34px_rgba(0,0,0,0.06)] transition-shadow duration-300"
               >
                 <div className="flex flex-col justify-between pl-0.5 sm:pl-1 w-full sm:w-auto">
                   <span className="text-[14px] sm:text-[15px] text-[#888888] font-normal tabular-nums">
@@ -878,25 +912,27 @@ export default function App() {
                     <button
                       type="button"
                       onClick={() => scrollToQuote()}
-                      className="group relative inline-flex items-center rounded-full bg-[#0D0D0D] hover:bg-[#222222] pl-[22px] pr-[52px] py-[11.5px] text-[15px] sm:text-[15.5px] font-medium text-white transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:shadow-sm whitespace-nowrap cursor-pointer"
+                      className="group/btn relative inline-flex items-center rounded-full bg-[#0D0D0D] hover:bg-[#222222] pl-[22px] pr-[52px] py-[11.5px] text-[15px] sm:text-[15.5px] font-medium text-white transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:shadow-sm whitespace-nowrap cursor-pointer"
                     >
-                      <span className="transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-[30px]">
+                      <span className="transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/btn:translate-x-[30px]">
                         Check My Subsidy
                       </span>
-                      <span className="absolute right-[7px] group-hover:right-[calc(100%-41px)] top-1/2 -translate-y-1/2 w-[34px] h-[34px] rounded-full bg-white text-[#0D0D0D] inline-flex items-center justify-center shrink-0 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:rotate-45">
+                      <span className="absolute right-[7px] group-hover/btn:right-[calc(100%-41px)] top-1/2 -translate-y-1/2 w-[34px] h-[34px] rounded-full bg-white text-[#0D0D0D] inline-flex items-center justify-center shrink-0 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/btn:rotate-45">
                         <ArrowUpRight className="w-4 h-4 stroke-[2.2]" />
                       </span>
                     </button>
                   </div>
                 </div>
 
-                <img
-                  src={tier.image}
-                  alt={tier.title}
-                  referrerPolicy="no-referrer"
-                  className="w-full sm:w-[220px] xl:w-[250px] h-[180px] sm:h-[190px] rounded-[18px] sm:rounded-[20px] object-cover shrink-0"
-                />
-              </div>
+                <div className="w-full sm:w-[220px] xl:w-[250px] h-[180px] sm:h-[190px] rounded-[18px] sm:rounded-[20px] overflow-hidden shrink-0">
+                  <img
+                    src={tier.image}
+                    alt={tier.title}
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -1220,8 +1256,8 @@ export default function App() {
           </div>
           <div className="relative rounded-[20px] sm:rounded-[24px] overflow-hidden group shadow-xs">
             <img
-              src="/assets/aistudio/helping_people_3_e2a5b107.webp"
-              alt="NIRT solar engineer and happy homeowner handshake on terrace"
+              src="/assets/aistudio/Helping_People_3_82f1296a.webp"
+              alt="NIRT solar engineers holding warranty certificate on terrace"
               referrerPolicy="no-referrer"
               className="w-full h-[180px] sm:h-[160px] lg:h-[196px] object-cover block transition-transform duration-500 group-hover:scale-105"
             />
@@ -1974,7 +2010,7 @@ export default function App() {
                 src="/assets/aistudio/nirt_logo_dbbf2295.png"
                 alt="NIRT Renewable Energy"
                 referrerPolicy="no-referrer"
-                className="h-[72px] sm:h-[92px] w-auto object-contain block"
+                className="h-[96px] sm:h-[120px] lg:h-[136px] w-auto object-contain block transition-transform duration-200 hover:scale-[1.02]"
               />
             </a>
             <p className="text-[15px] sm:text-[16px] leading-[1.55] text-white/90 font-normal max-w-[390px]">
@@ -2135,33 +2171,33 @@ export default function App() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 16 }}
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="bg-white text-[#0D0D0D] rounded-[24px] max-w-[480px] w-full p-6 sm:p-7 shadow-2xl border border-black/5 relative"
+              className="bg-white text-[#0D0D0D] rounded-[26px] max-w-[500px] w-full p-6 sm:p-8 shadow-2xl border border-black/5 relative"
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 type="button"
                 onClick={() => setMidPagePopupOpen(false)}
                 aria-label="Close popup"
-                className="absolute top-4 right-4 w-8 h-8 rounded-full bg-[#F2F2F2] hover:bg-[#E5E5E5] inline-flex items-center justify-center text-[#0D0D0D] cursor-pointer"
+                className="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#F2F2F2] hover:bg-[#E5E5E5] inline-flex items-center justify-center text-[#0D0D0D] cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
 
-              <span className="inline-block bg-[#F2F2F2] text-[#1E255E] text-[10px] font-medium px-3 py-1 rounded-full mb-3">
+              <span className="inline-block bg-[#F2F2F2] text-[#1E255E] text-[11.5px] font-medium px-3.5 py-1 rounded-full mb-3">
                 Free Solar Assessment
               </span>
 
-              <h3 className="text-[20px] sm:text-[22px] font-medium leading-[1.25] tracking-[-0.02em] text-[#0D0D0D]">
+              <h3 className="text-[21px] sm:text-[23px] font-medium leading-[1.25] tracking-[-0.02em] text-[#0D0D0D]">
                 Want to Know What Solar Could Mean for Your Home?
               </h3>
-              <p className="mt-2 text-[12px] leading-[1.5] text-[#6E6E6E]">
+              <p className="mt-2 text-[13.5px] leading-[1.5] text-[#6E6E6E]">
                 Share your monthly electricity bill and location to start a
                 solar assessment with NIRT.
               </p>
 
-              <form onSubmit={handlePopupFormSubmit} className="mt-5 space-y-3">
+              <form onSubmit={handlePopupFormSubmit} className="mt-5 space-y-4">
                 <div>
-                  <label className="block text-[10px] font-medium text-[#222222] mb-1">
+                  <label className="block text-[12.5px] font-medium text-[#222222] mb-1.5">
                     Name
                   </label>
                   <input
@@ -2175,13 +2211,13 @@ export default function App() {
                       })
                     }
                     placeholder="Your full name"
-                    className="w-full rounded-full border border-[#E5E5E5] bg-[#FAFAFA] px-4 py-2 text-[11px] text-[#0D0D0D] focus:outline-none focus:border-[#1E255E]"
+                    className="w-full rounded-full border border-[#D5D8DC] bg-[#FAFAFA] hover:bg-white focus:bg-white px-5 py-3.5 text-[14.5px] font-medium text-[#0D0D0D] placeholder:text-[#7A7A7A] focus:outline-none focus:border-[#1E255E] focus:ring-4 focus:ring-[#1E255E]/10 transition-all"
                   />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
-                    <label className="block text-[10px] font-medium text-[#222222] mb-1">
+                    <label className="block text-[12.5px] font-medium text-[#222222] mb-1.5">
                       District
                     </label>
                     <div className="relative w-full">
@@ -2195,7 +2231,7 @@ export default function App() {
                             district: e.target.value,
                           })
                         }
-                        className={`w-full appearance-none rounded-full border border-[#E5E5E5] bg-[#FAFAFA] pl-4 pr-8 py-2 text-[11px] focus:outline-none focus:border-[#1E255E] cursor-pointer ${
+                        className={`w-full appearance-none rounded-full border border-[#D5D8DC] bg-[#FAFAFA] hover:bg-white focus:bg-white pl-5 pr-10 py-3.5 text-[14.5px] font-medium focus:outline-none focus:border-[#1E255E] focus:ring-4 focus:ring-[#1E255E]/10 transition-all cursor-pointer ${
                           popupFormData.district
                             ? 'text-[#0D0D0D]'
                             : 'text-[#7A7A7A]'
@@ -2208,18 +2244,18 @@ export default function App() {
                           <option
                             key={district}
                             value={district}
-                            className="text-[#0D0D0D] bg-white"
+                            className="text-[#0D0D0D] bg-white font-normal"
                           >
                             {district}
                           </option>
                         ))}
                       </select>
-                      <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#7A7A7A]" />
+                      <ChevronDown className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#7A7A7A]" />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-medium text-[#222222] mb-1">
+                    <label className="block text-[12.5px] font-medium text-[#222222] mb-1.5">
                       Contact number
                     </label>
                     <input
@@ -2233,13 +2269,13 @@ export default function App() {
                         })
                       }
                       placeholder="Mobile number"
-                      className="w-full rounded-full border border-[#E5E5E5] bg-[#FAFAFA] px-4 py-2 text-[11px] text-[#0D0D0D] focus:outline-none focus:border-[#1E255E]"
+                      className="w-full rounded-full border border-[#D5D8DC] bg-[#FAFAFA] hover:bg-white focus:bg-white px-5 py-3.5 text-[14.5px] font-medium text-[#0D0D0D] placeholder:text-[#7A7A7A] focus:outline-none focus:border-[#1E255E] focus:ring-4 focus:ring-[#1E255E]/10 transition-all"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-medium text-[#222222] mb-1">
+                  <label className="block text-[12.5px] font-medium text-[#222222] mb-1.5">
                     Bi monthly bill
                   </label>
                   <input
@@ -2253,13 +2289,13 @@ export default function App() {
                       })
                     }
                     placeholder="Your bi-monthly EB bill amount (₹)"
-                    className="w-full rounded-full border border-[#E5E5E5] bg-[#FAFAFA] px-4 py-2 text-[11px] text-[#0D0D0D] focus:outline-none focus:border-[#1E255E]"
+                    className="w-full rounded-full border border-[#D5D8DC] bg-[#FAFAFA] hover:bg-white focus:bg-white px-5 py-3.5 text-[14.5px] font-medium text-[#0D0D0D] placeholder:text-[#7A7A7A] focus:outline-none focus:border-[#1E255E] focus:ring-4 focus:ring-[#1E255E]/10 transition-all"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="group relative mt-2 w-full py-3.5 px-6 rounded-full bg-[#0D0D0D] hover:bg-[#222222] text-white text-[13.5px] font-medium inline-flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] cursor-pointer"
+                  className="group relative mt-2 w-full py-3.5 px-6 rounded-full bg-[#0D0D0D] hover:bg-[#222222] text-white text-[15px] font-medium inline-flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] cursor-pointer"
                 >
                   <span className="transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-3">
                     {popupFormStatus === 'submitted'
