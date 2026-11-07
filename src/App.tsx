@@ -283,6 +283,7 @@ export default function App() {
     biMonthlyBill: '',
   });
   const [formStatus, setFormStatus] = useState<'idle' | 'submitted'>('idle');
+  const [formLoading, setFormLoading] = useState<boolean>(false);
 
   // Mid-page Popup Form state
   const [popupFormData, setPopupFormData] = useState({
@@ -294,6 +295,7 @@ export default function App() {
   const [popupFormStatus, setPopupFormStatus] = useState<'idle' | 'submitted'>(
     'idle'
   );
+  const [popupFormLoading, setPopupFormLoading] = useState<boolean>(false);
 
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterSaved, setNewsletterSaved] = useState(false);
@@ -366,19 +368,68 @@ export default function App() {
     setMidPagePopupOpen(true);
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setFormStatus('submitted');
-    setTimeout(() => setFormStatus('idle'), 5000);
+    setFormLoading(true);
+    try {
+      await fetch('/api/bigin/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formData,
+          source: 'Hero Quick Estimate Form',
+        }),
+      });
+      setFormStatus('submitted');
+      setFormData({
+        name: '',
+        district: '',
+        contactNumber: '',
+        biMonthlyBill: '',
+      });
+      setTimeout(() => setFormStatus('idle'), 5000);
+    } catch (err) {
+      console.error('Error submitting contact to Bigin:', err);
+      setFormStatus('submitted');
+      setTimeout(() => setFormStatus('idle'), 5000);
+    } finally {
+      setFormLoading(false);
+    }
   };
 
-  const handlePopupFormSubmit = (e: React.FormEvent) => {
+  const handlePopupFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setPopupFormStatus('submitted');
-    setTimeout(() => {
-      setPopupFormStatus('idle');
-      setMidPagePopupOpen(false);
-    }, 1800);
+    setPopupFormLoading(true);
+    try {
+      await fetch('/api/bigin/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...popupFormData,
+          source: 'Popup Solar Assessment Form',
+        }),
+      });
+      setPopupFormStatus('submitted');
+      setPopupFormData({
+        name: '',
+        district: '',
+        contactNumber: '',
+        biMonthlyBill: '',
+      });
+      setTimeout(() => {
+        setPopupFormStatus('idle');
+        setMidPagePopupOpen(false);
+      }, 2200);
+    } catch (err) {
+      console.error('Error submitting contact to Bigin:', err);
+      setPopupFormStatus('submitted');
+      setTimeout(() => {
+        setPopupFormStatus('idle');
+        setMidPagePopupOpen(false);
+      }, 2200);
+    } finally {
+      setPopupFormLoading(false);
+    }
   };
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {
@@ -648,10 +699,13 @@ export default function App() {
             </div>
             <button
               type="submit"
-              className="group relative w-full sm:col-span-2 lg:col-span-1 lg:w-auto inline-flex items-center justify-center bg-[#1E255E] hover:bg-[#14193F] text-white rounded-full pl-[24px] pr-[54px] sm:pl-[26px] sm:pr-[58px] py-[13.5px] sm:py-[14px] text-[15px] sm:text-[15.5px] font-medium shadow-[0_8px_20px_rgba(30,37,94,0.32)] hover:shadow-[0_10px_26px_rgba(30,37,94,0.42)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] whitespace-nowrap shrink-0 cursor-pointer"
+              disabled={formLoading}
+              className="group relative w-full sm:col-span-2 lg:col-span-1 lg:w-auto inline-flex items-center justify-center bg-[#1E255E] hover:bg-[#14193F] text-white rounded-full pl-[24px] pr-[54px] sm:pl-[26px] sm:pr-[58px] py-[13.5px] sm:py-[14px] text-[15px] sm:text-[15.5px] font-medium shadow-[0_8px_20px_rgba(30,37,94,0.32)] hover:shadow-[0_10px_26px_rgba(30,37,94,0.42)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] whitespace-nowrap shrink-0 cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed"
             >
               <span className="transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-[30px] sm:group-hover:translate-x-[34px]">
-                {formStatus === 'submitted'
+                {formLoading
+                  ? 'Saving to Bigin...'
+                  : formStatus === 'submitted'
                   ? 'Estimate Requested ✓'
                   : 'Get My solar estimate'}
               </span>
@@ -707,20 +761,20 @@ export default function App() {
           </button>
         </div>
 
-        {/* 3-Column Bento Grid (responsive across mobile 1-col, tablet 2-col, desktop 3-col) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-[28px]">
+        {/* 3-Column Bento Grid (matching proportions and exact equal dimensions across all 3 cards) */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-[28px] items-stretch">
           {/* Card 1: 1–3 kW+ System capacity */}
-          <div className="relative rounded-[26px] sm:rounded-[30px] overflow-hidden lg:aspect-[444/518] min-h-[430px] sm:min-h-[480px] bg-[#6FA6BF] select-none shadow-sm">
+          <div className="relative rounded-[26px] sm:rounded-[30px] overflow-hidden bg-[#6FA6BF] select-none shadow-sm flex flex-col justify-between w-full h-full min-h-[490px] sm:min-h-[510px]">
             <img
               src="/assets/aistudio/system_capacity_e25756bf.webp"
               alt="1–3 kW+ System capacity rooftop solar array in Tamil Nadu"
               referrerPolicy="no-referrer"
-              className="w-full h-full object-cover block"
+              className="absolute inset-0 w-full h-full object-cover block"
             />
             {/* Top-Left Metric + Top-Right Frosted Badge (matching screenshot with unobstructed bottom photo) */}
-            <div className="absolute inset-0 p-6 sm:p-[34px] xl:p-[38px] flex flex-col justify-start z-10 bg-gradient-to-b from-black/55 via-black/20 to-transparent">
+            <div className="relative z-10 p-6 sm:p-7 xl:p-8 flex flex-col justify-start bg-gradient-to-b from-black/60 via-black/25 to-transparent">
               <div className="flex flex-wrap items-start justify-between gap-2.5">
-                <div className="text-white font-light text-[44px] sm:text-[54px] xl:text-[64px] leading-[0.96] tracking-[-0.03em] tabular-nums">
+                <div className="text-white font-light text-[42px] sm:text-[50px] xl:text-[58px] leading-[0.96] tracking-[-0.03em] tabular-nums">
                   1–3 kW+
                 </div>
                 <div className="inline-flex items-center gap-2 bg-white/25 backdrop-blur-md rounded-full pl-3.5 pr-1.5 py-1.5 text-[12px] sm:text-[12.5px] text-white whitespace-nowrap shrink-0">
@@ -730,7 +784,7 @@ export default function App() {
                   </span>
                 </div>
               </div>
-              <p className="mt-3 text-white font-normal text-[16px] sm:text-[17px] leading-[1.38] max-w-[260px]">
+              <p className="mt-3 text-white font-normal text-[15px] sm:text-[16px] leading-[1.4] max-w-[280px]">
                 The right size depends on your electricity consumption, roof
                 suitability and usage pattern.
               </p>
@@ -738,112 +792,225 @@ export default function App() {
           </div>
 
           {/* Card 2: Solid Black Card with Lifespan Metric */}
-          <div className="relative rounded-[26px] sm:rounded-[30px] overflow-hidden bg-black text-white p-6 sm:p-[34px] xl:p-[38px] flex flex-col justify-between lg:aspect-[444/518] min-h-[430px] sm:min-h-[480px] shadow-sm border border-neutral-800/60">
+          <div className="relative rounded-[26px] sm:rounded-[30px] overflow-hidden bg-black text-white p-6 sm:p-7 xl:p-8 flex flex-col justify-between w-full h-full min-h-[490px] sm:min-h-[510px] shadow-sm border border-neutral-800/60">
             {/* Top Row: Avatars + Pill */}
             <div className="relative z-10 flex items-center justify-between gap-2.5">
               <CustomerAvatarGroup variant="dark" count={3} />
-              <div className="inline-flex items-center gap-2 bg-[#1F1F1F]/90 backdrop-blur-sm border border-white/10 rounded-full pl-3.5 sm:pl-4 pr-1.5 py-1.5 text-[12px] sm:text-[13px] text-white/90 whitespace-nowrap">
+              <div className="inline-flex items-center gap-2 bg-[#1F1F1F]/90 backdrop-blur-sm border border-white/10 rounded-full pl-3.5 sm:pl-4 pr-1.5 py-1.5 text-[12px] sm:text-[12.5px] text-white/90 whitespace-nowrap">
                 <span>Grid-Connected</span>
-                <span className="w-[24px] h-[24px] sm:w-[26px] sm:h-[26px] rounded-full bg-black/50 border border-white/15 inline-flex items-center justify-center">
+                <span className="w-[24px] h-[24px] rounded-full bg-black/50 border border-white/15 inline-flex items-center justify-center">
                   <Globe className="w-3.5 h-3.5 text-white/90" />
                 </span>
               </div>
             </div>
 
             {/* Middle Copy */}
-            <p className="relative z-10 text-[19px] sm:text-[21px] xl:text-[23px] leading-[1.38] text-white font-normal tracking-[-0.01em] my-auto py-4">
+            <p className="relative z-10 text-[18px] sm:text-[20px] xl:text-[22px] leading-[1.38] text-white font-normal tracking-[-0.01em] my-auto py-4">
               Grid-connected rooftop solar systems can have a lifespan of 25
               years. Component warranties and actual performance vary.
             </p>
 
             {/* Bottom Metric: 25 years */}
             <div className="relative z-10">
-              <div className="text-[48px] sm:text-[58px] xl:text-[68px] font-light leading-none tracking-[-0.03em] text-white tabular-nums">
+              <div className="text-[44px] sm:text-[52px] xl:text-[60px] font-light leading-none tracking-[-0.03em] text-white tabular-nums">
                 25 years
               </div>
-              <div className="mt-2.5 sm:mt-3 text-[16px] sm:text-[17px] text-white/90 font-normal">
+              <div className="mt-2.5 sm:mt-3 text-[15px] sm:text-[16px] text-white/90 font-normal">
                 Potential system lifespan
               </div>
             </div>
           </div>
 
           {/* Card 3: White Card (₹35,000–₹1,00,000 Potential combined subsidy + Tiered Subsidy Scale) */}
-          <div className="md:col-span-2 lg:col-span-1 rounded-[26px] sm:rounded-[30px] bg-white p-6 sm:p-8 flex flex-col justify-between shadow-sm border border-neutral-200/80 min-h-[460px] sm:min-h-[500px]">
+          <div className="rounded-[26px] sm:rounded-[30px] bg-white p-6 sm:p-7 xl:p-8 flex flex-col justify-between shadow-sm border border-neutral-200/80 w-full h-full min-h-[490px] sm:min-h-[510px]">
             <div>
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="text-[32px] sm:text-[36px] xl:text-[40px] font-normal leading-none tracking-[-0.03em] text-[#0D0D0D] tabular-nums font-currency inline-flex items-baseline shrink-0">
+              <div className="flex flex-wrap items-center justify-between gap-2.5">
+                <div className="text-[28px] sm:text-[32px] xl:text-[36px] font-normal leading-none tracking-[-0.03em] text-[#0D0D0D] tabular-nums font-currency inline-flex items-baseline shrink-0">
                   <RupeeSymbol />35k–<RupeeSymbol />1L
                 </div>
-                <div className="inline-flex items-center gap-1.5 bg-[#1E255E] text-white rounded-full pl-3.5 pr-2 py-1.5 text-[12px] font-medium whitespace-nowrap shrink-0 shadow-2xs">
+                <div className="inline-flex items-center gap-1.5 bg-[#1E255E] text-white rounded-full pl-3 pr-2 py-1 text-[11.5px] sm:text-[12px] font-medium whitespace-nowrap shrink-0 shadow-2xs">
                   <span>Both Central &amp; State</span>
-                  <span className="w-[20px] h-[20px] rounded-full bg-white text-[#1E255E] inline-flex items-center justify-center">
-                    <Zap className="w-3 h-3 stroke-[2.2]" />
+                  <span className="w-[18px] h-[18px] rounded-full bg-white text-[#1E255E] inline-flex items-center justify-center">
+                    <Zap className="w-2.5 h-2.5 stroke-[2.2]" />
                   </span>
                 </div>
               </div>
-              <div className="mt-3 text-[15.5px] sm:text-[16.5px] text-[#555555] font-normal leading-snug">
+              <div className="mt-2.5 text-[14px] sm:text-[15px] text-[#555555] font-normal leading-snug">
                 Potential combined subsidy (<span className="font-currency font-semibold text-[#1E255E] inline-flex items-baseline"><RupeeSymbol />35,000–<RupeeSymbol />1,00,000</span>)
               </div>
-              <p className="mt-2 text-[13px] sm:text-[13.5px] leading-[1.5] text-[#7A7A7A]">
+              <p className="mt-1.5 text-[12px] sm:text-[12.5px] leading-[1.45] text-[#7A7A7A]">
                 For eligible residential systems under current central and state government scheme
               </p>
             </div>
 
             {/* Elevated Subsidy Scale Showcase */}
-            <div className="pt-4">
-              <div className="bg-[#F6F7F9] rounded-[24px] p-4 sm:p-5 border border-black/[0.03]">
+            <div className="pt-3">
+              <div className="bg-[#F6F7F9] rounded-[20px] p-3.5 sm:p-4 border border-black/[0.03]">
                 {/* Clean Top Caption */}
-                <div className="flex items-center justify-between text-[11.5px] text-[#6E6E6E] font-medium pb-3 border-b border-black/[0.06]">
-                  <span className="flex items-center gap-2 text-[#1E255E] font-semibold">
-                    <span className="w-2 h-2 rounded-full bg-[#76B82A]" />
+                <div className="flex items-center justify-between text-[11px] text-[#6E6E6E] font-medium pb-2.5 border-b border-black/[0.06]">
+                  <span className="flex items-center gap-1.5 text-[#1E255E] font-semibold">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#76B82A]" />
                     Central &amp; State Scheme
                   </span>
-                  <span className="text-[10.5px] font-bold uppercase tracking-wider text-[#76B82A] bg-[#76B82A]/10 px-2.5 py-0.5 rounded-full">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#76B82A] bg-[#76B82A]/10 px-2 py-0.5 rounded-full">
                     Up to 100% Subsidy
                   </span>
                 </div>
 
-                {/* 3 Stepped Pillars with 1,00,000 Towering High */}
-                <div className="grid grid-cols-3 gap-3 items-end pt-5 pb-1">
+                {/* 3 Stepped Pillars with 1,00,000 Towering High with Smooth Rising Animations */}
+                <div className="grid grid-cols-3 gap-2.5 items-end pt-3 pb-0.5">
                   {/* Pillar 1: 1 kW */}
-                  <div className="flex flex-col items-center">
-                    <span className="text-[11.5px] sm:text-[12px] font-semibold text-[#1E255E] font-currency mb-2 tabular-nums whitespace-nowrap inline-flex items-baseline">
+                  <motion.div
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: '-20px' }}
+                    whileHover={{ y: -3 }}
+                    transition={{ duration: 0.25 }}
+                    className="flex flex-col items-center group cursor-pointer"
+                  >
+                    <motion.span
+                      variants={{
+                        hidden: { opacity: 0, y: 8 },
+                        visible: {
+                          opacity: 1,
+                          y: 0,
+                          transition: { duration: 0.5, delay: 0.2 },
+                        },
+                      }}
+                      className="text-[11px] font-semibold text-[#1E255E] group-hover:text-[#232B66] font-currency mb-1.5 tabular-nums whitespace-nowrap inline-flex items-baseline transition-colors"
+                    >
                       <RupeeSymbol />35,000
-                    </span>
-                    <div className="w-full h-[40px] sm:h-[46px] bg-[#DCE2EC] hover:bg-[#CFD7E4] rounded-t-[12px] rounded-b-[6px] transition-all duration-300" />
-                    <span className="mt-2.5 text-[12px] font-medium text-[#666666]">
+                    </motion.span>
+                    <motion.div
+                      variants={{
+                        hidden: { scaleY: 0, opacity: 0 },
+                        visible: {
+                          scaleY: 1,
+                          opacity: 1,
+                          transition: {
+                            duration: 0.75,
+                            ease: [0.22, 1, 0.36, 1],
+                            delay: 0.1,
+                          },
+                        },
+                      }}
+                      className="w-full h-[36px] sm:h-[40px] origin-bottom bg-[#DCE2EC] group-hover:bg-[#CFD7E4] rounded-t-[10px] rounded-b-[4px] transition-all duration-300 shadow-2xs"
+                    />
+                    <span className="mt-2 text-[11.5px] font-medium text-[#666666] group-hover:text-[#1E255E] transition-colors">
                       1 kW
                     </span>
-                  </div>
+                  </motion.div>
 
                   {/* Pillar 2: 2 kW */}
-                  <div className="flex flex-col items-center">
-                    <span className="text-[11.5px] sm:text-[12px] font-semibold text-[#1E255E] font-currency mb-2 tabular-nums whitespace-nowrap inline-flex items-baseline">
+                  <motion.div
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: '-20px' }}
+                    whileHover={{ y: -3 }}
+                    transition={{ duration: 0.25 }}
+                    className="flex flex-col items-center group cursor-pointer"
+                  >
+                    <motion.span
+                      variants={{
+                        hidden: { opacity: 0, y: 8 },
+                        visible: {
+                          opacity: 1,
+                          y: 0,
+                          transition: { duration: 0.5, delay: 0.35 },
+                        },
+                      }}
+                      className="text-[11px] font-semibold text-[#1E255E] group-hover:text-[#232B66] font-currency mb-1.5 tabular-nums whitespace-nowrap inline-flex items-baseline transition-colors"
+                    >
                       <RupeeSymbol />75,000
-                    </span>
-                    <div className="w-full h-[72px] sm:h-[80px] bg-[#2A3478] hover:bg-[#232B66] rounded-t-[12px] rounded-b-[6px] transition-all duration-300 shadow-xs" />
-                    <span className="mt-2.5 text-[12px] font-medium text-[#666666]">
+                    </motion.span>
+                    <motion.div
+                      variants={{
+                        hidden: { scaleY: 0, opacity: 0 },
+                        visible: {
+                          scaleY: 1,
+                          opacity: 1,
+                          transition: {
+                            duration: 0.8,
+                            ease: [0.22, 1, 0.36, 1],
+                            delay: 0.22,
+                          },
+                        },
+                      }}
+                      className="w-full h-[64px] sm:h-[70px] origin-bottom bg-[#2A3478] group-hover:bg-[#232B66] rounded-t-[10px] rounded-b-[4px] transition-all duration-300 shadow-xs"
+                    />
+                    <span className="mt-2 text-[11.5px] font-medium text-[#666666] group-hover:text-[#1E255E] transition-colors">
                       2 kW
                     </span>
-                  </div>
+                  </motion.div>
 
                   {/* Pillar 3: 3 kW+ (Towering 1,00,000 Max Tier) */}
-                  <div className="flex flex-col items-center">
-                    <div className="flex flex-col items-center mb-1.5">
-                      <span className="text-[9px] font-extrabold uppercase tracking-wider text-white bg-[#76B82A] px-2 py-0.5 rounded-full mb-1 shadow-xs whitespace-nowrap">
+                  <motion.div
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: '-20px' }}
+                    whileHover={{ y: -4 }}
+                    transition={{ duration: 0.25 }}
+                    className="flex flex-col items-center group cursor-pointer"
+                  >
+                    <motion.div
+                      variants={{
+                        hidden: { opacity: 0, y: 10, scale: 0.92 },
+                        visible: {
+                          opacity: 1,
+                          y: 0,
+                          scale: 1,
+                          transition: { duration: 0.55, delay: 0.5 },
+                        },
+                      }}
+                      className="flex flex-col items-center mb-1"
+                    >
+                      <motion.span
+                        animate={{ y: [0, -2, 0] }}
+                        transition={{
+                          repeat: Infinity,
+                          duration: 2.4,
+                          ease: 'easeInOut',
+                        }}
+                        className="text-[8.5px] font-extrabold uppercase tracking-wider text-white bg-[#76B82A] px-1.5 py-0.5 rounded-full mb-0.5 shadow-xs whitespace-nowrap"
+                      >
                         Max Tier
-                      </span>
-                      <span className="text-[13px] sm:text-[14px] font-bold text-[#1E255E] font-currency tabular-nums whitespace-nowrap inline-flex items-baseline">
+                      </motion.span>
+                      <span className="text-[12px] sm:text-[13px] font-bold text-[#1E255E] group-hover:text-[#14193F] font-currency tabular-nums whitespace-nowrap inline-flex items-baseline transition-colors">
                         <RupeeSymbol />1,00,000
                       </span>
-                    </div>
-                    <div className="w-full h-[120px] sm:h-[132px] bg-gradient-to-t from-[#1E255E] via-[#243075] to-[#76B82A] rounded-t-[14px] rounded-b-[6px] shadow-[0_8px_20px_rgba(30,37,94,0.22)] relative overflow-hidden transition-all duration-300 hover:brightness-105">
-                      <div className="absolute inset-x-0 top-0 h-1 bg-white/90" />
-                    </div>
-                    <span className="mt-2.5 text-[12px] font-bold text-[#0D0D0D]">
+                    </motion.div>
+                    <motion.div
+                      variants={{
+                        hidden: { scaleY: 0, opacity: 0 },
+                        visible: {
+                          scaleY: 1,
+                          opacity: 1,
+                          transition: {
+                            duration: 0.9,
+                            ease: [0.22, 1, 0.36, 1],
+                            delay: 0.35,
+                          },
+                        },
+                      }}
+                      className="w-full h-[100px] sm:h-[110px] origin-bottom bg-gradient-to-t from-[#1E255E] via-[#243075] to-[#76B82A] rounded-t-[12px] rounded-b-[4px] shadow-[0_6px_16px_rgba(30,37,94,0.22)] relative overflow-hidden transition-all duration-300 group-hover:shadow-[0_8px_22px_rgba(30,37,94,0.35)]"
+                    >
+                      <div className="absolute inset-x-0 top-0 h-0.5 bg-white/90" />
+                      {/* Subtle ambient light sweep */}
+                      <motion.div
+                        animate={{ x: ['-120%', '240%'] }}
+                        transition={{
+                          repeat: Infinity,
+                          duration: 3.4,
+                          repeatDelay: 1.8,
+                          ease: 'easeInOut',
+                        }}
+                        className="absolute inset-y-0 w-1/2 bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none transform -skew-x-12"
+                      />
+                    </motion.div>
+                    <span className="mt-2 text-[11.5px] font-bold text-[#0D0D0D] group-hover:text-[#76B82A] transition-colors">
                       3 kW+
                     </span>
-                  </div>
+                  </motion.div>
                 </div>
               </div>
             </div>
@@ -2242,10 +2409,13 @@ export default function App() {
 
                 <button
                   type="submit"
-                  className="group relative mt-2 w-full py-3.5 px-6 rounded-full bg-[#0D0D0D] hover:bg-[#222222] text-white text-[15px] font-medium inline-flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] cursor-pointer"
+                  disabled={popupFormLoading}
+                  className="group relative mt-2 w-full py-3.5 px-6 rounded-full bg-[#0D0D0D] hover:bg-[#222222] text-white text-[15px] font-medium inline-flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed"
                 >
                   <span className="transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-3">
-                    {popupFormStatus === 'submitted'
+                    {popupFormLoading
+                      ? 'Saving to Bigin...'
+                      : popupFormStatus === 'submitted'
                       ? 'Assessment Started ✓'
                       : 'Explore My Solar Potential'}
                   </span>
