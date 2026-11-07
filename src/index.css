@@ -16,3 +16,11 @@
 .font-body {
   font-family: 'Plus Jakarta Sans', 'Poppins', sans-serif;
 }
+
+/* Famous modern font style specifically for numbers with the Indian Rupee (₹) symbol */
+.font-currency,
+.font-rupee,
+.font-price {
+  font-family: 'Outfit', 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-feature-settings: "tnum" 1, "cv01" 1, "zero" 1;
+}

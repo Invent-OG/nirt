@@ -67,6 +67,43 @@ const DISTRICTS = [
   'Others',
 ];
 
+const BILL_RANGES = [
+  '₹500 – ₹1,000',
+  '₹1,000 – ₹1,500',
+  '₹1,500 – ₹2,000',
+  '₹2,000 – ₹3,000',
+  '₹3,000 – ₹5,000',
+  '₹5,000 – ₹7,500',
+  '₹7,500 – ₹10,000',
+  'Above ₹10,000',
+];
+
+/**
+ * Exact Indian Rupee (₹) vector symbol reconstructed from user reference image.
+ * Features parallel slanted cuts on both horizontal crossbars, smooth upper loop,
+ * sharp lower-left elbow, and straight diagonal leg ending in a flat horizontal cut.
+ */
+export function RupeeSymbol({
+  className = 'w-[0.72em] h-[0.72em] inline-block -mt-[0.12em] mr-[0.05em] align-middle fill-current shrink-0',
+}: {
+  className?: string;
+}) {
+  return (
+    <svg
+      viewBox="0 0 44 70"
+      className={className}
+      aria-hidden="true"
+      focusable="false"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M 3.2 0 L 43 0 L 39.5 8 L 30 8 C 30.8 9.8 31.5 11.8 32 14 L 43.8 14 L 40 21 L 32.8 21 C 32.5 25.5 30.5 29.5 27 32.5 C 23.5 35.5 18.5 37.5 13 38.5 L 34 70 H 24 L 2 40.5 V 33.5 C 7.5 33.5 13.5 32 18 29.5 C 21.2 27.5 22.8 24.5 23.2 21 L 0 21 L 3.2 14 L 21.2 14 C 20 11.5 17.5 9.5 14 8 L 0 8 L 3.2 0 Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
 const CUSTOMER_AVATARS = [
   { initial: 'NR', name: 'Nataraj A.', bg: 'bg-[#1E255E]' },
   { initial: 'KR', name: 'Kirit Raja', bg: 'bg-[#76B82A]' },
@@ -107,28 +144,6 @@ function CustomerAvatarGroup({
     </div>
   );
 }
-
-// Dot matrix data for the third bento card (14 columns, bottom-to-top)
-// 'D' = #193d3c (dark teal), 'G' = #9cfc6c (lime green), 'L' = #dcdcdc (light gray)
-const DOT_CHART_COLUMNS: Array<{
-  dots: Array<'D' | 'G' | 'L'>;
-  label?: string;
-}> = [
-  { dots: ['D', 'D', 'G', 'D', 'D'], label: '1 kW' },
-  { dots: ['L', 'L', 'L', 'G', 'D', 'D'] },
-  { dots: ['L', 'L', 'D', 'D'] },
-  { dots: ['L', 'L', 'D'] },
-  { dots: ['G', 'L', 'D', 'D', 'D'], label: '2 kW' },
-  { dots: ['L', 'D'] },
-  { dots: ['D', 'D', 'D', 'D'] },
-  { dots: ['D', 'D', 'D', 'D'] },
-  { dots: ['L', 'L', 'L', 'G', 'D', 'D', 'D'] },
-  { dots: ['L', 'L', 'D', 'D'], label: '3 kW' },
-  { dots: ['L', 'D', 'D'] },
-  { dots: ['L', 'L', 'D'] },
-  { dots: ['L', 'D'] },
-  { dots: ['D'], label: '3 kW+' },
-];
 
 const PROJECTS = [
   {
@@ -348,10 +363,7 @@ export default function App() {
 
   const scrollToQuote = () => {
     setMobileMenuOpen(false);
-    const el = document.getElementById('quote-form');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
+    setMidPagePopupOpen(true);
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {
@@ -520,7 +532,10 @@ export default function App() {
             {/* Bottom-Left Headline (PDF Page 1: Get Up to ₹1,00,000 for Solar) */}
             <div>
               <h1 className="text-white font-normal text-[34px] sm:text-[48px] md:text-[56px] lg:text-[64px] leading-[1.14] tracking-[-0.02em] max-w-[680px]">
-                Get Up to ₹1,00,000
+                Get Up to{' '}
+                <span className="font-currency font-medium inline-flex items-baseline">
+                  <RupeeSymbol />1,00,000
+                </span>
                 <br />
                 for Solar
               </h1>
@@ -604,16 +619,33 @@ export default function App() {
               placeholder="Contact number"
               className="w-full min-w-0 rounded-full border-2 border-[#E2E5EA] bg-[#F8F9FA] hover:bg-white focus:bg-white px-4 sm:px-5 py-3 sm:py-3.5 text-[14.5px] sm:text-[15px] font-medium text-[#0D0D0D] placeholder:text-[#7A7A7A] focus:outline-none focus:border-[#1E255E] focus:ring-4 focus:ring-[#1E255E]/10 transition-all"
             />
-            <input
-              type="text"
-              required
-              value={formData.biMonthlyBill}
-              onChange={(e) =>
-                setFormData({ ...formData, biMonthlyBill: e.target.value })
-              }
-              placeholder="Bi monthly bill (₹)"
-              className="w-full min-w-0 rounded-full border-2 border-[#E2E5EA] bg-[#F8F9FA] hover:bg-white focus:bg-white px-4 sm:px-5 py-3 sm:py-3.5 text-[14.5px] sm:text-[15px] font-medium text-[#0D0D0D] placeholder:text-[#7A7A7A] focus:outline-none focus:border-[#1E255E] focus:ring-4 focus:ring-[#1E255E]/10 transition-all"
-            />
+            <div className="relative w-full min-w-0">
+              <select
+                required
+                aria-label="Bi-monthly bill"
+                value={formData.biMonthlyBill}
+                onChange={(e) =>
+                  setFormData({ ...formData, biMonthlyBill: e.target.value })
+                }
+                className={`w-full min-w-0 appearance-none rounded-full border-2 border-[#E2E5EA] bg-[#F8F9FA] hover:bg-white focus:bg-white pl-4 sm:pl-5 pr-10 py-3 sm:py-3.5 text-[14.5px] sm:text-[15px] font-medium font-currency focus:outline-none focus:border-[#1E255E] focus:ring-4 focus:ring-[#1E255E]/10 transition-all cursor-pointer ${
+                  formData.biMonthlyBill ? 'text-[#0D0D0D]' : 'text-[#7A7A7A]'
+                }`}
+              >
+                <option value="" disabled>
+                  Bi monthly bill (₹)
+                </option>
+                {BILL_RANGES.map((range) => (
+                  <option
+                    key={range}
+                    value={range}
+                    className="text-[#0D0D0D] bg-white font-normal"
+                  >
+                    {range}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#7A7A7A]" />
+            </div>
             <button
               type="submit"
               className="group relative w-full sm:col-span-2 lg:col-span-1 lg:w-auto inline-flex items-center justify-center bg-[#1E255E] hover:bg-[#14193F] text-white rounded-full pl-[24px] pr-[54px] sm:pl-[26px] sm:pr-[58px] py-[13.5px] sm:py-[14px] text-[15px] sm:text-[15.5px] font-medium shadow-[0_8px_20px_rgba(30,37,94,0.32)] hover:shadow-[0_10px_26px_rgba(30,37,94,0.42)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] whitespace-nowrap shrink-0 cursor-pointer"
@@ -735,60 +767,84 @@ export default function App() {
             </div>
           </div>
 
-          {/* Card 3: White Card (₹35,000–₹1,00,000 Potential combined subsidy + Dot Matrix Chart) */}
-          <div className="md:col-span-2 lg:col-span-1 rounded-[26px] sm:rounded-[30px] bg-white p-6 sm:p-[34px] xl:p-[38px] flex flex-col justify-between lg:aspect-[444/518] min-h-[430px] sm:min-h-[480px]">
+          {/* Card 3: White Card (₹35,000–₹1,00,000 Potential combined subsidy + Tiered Subsidy Scale) */}
+          <div className="md:col-span-2 lg:col-span-1 rounded-[26px] sm:rounded-[30px] bg-white p-6 sm:p-8 flex flex-col justify-between shadow-sm border border-neutral-200/80 min-h-[460px] sm:min-h-[500px]">
             <div>
-              <div className="flex flex-wrap items-start justify-between gap-2.5">
-                <div className="text-[32px] sm:text-[36px] xl:text-[42px] font-normal leading-[1.05] tracking-[-0.03em] text-[#0D0D0D] tabular-nums">
-                  ₹35k–₹1L
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="text-[32px] sm:text-[36px] xl:text-[40px] font-normal leading-none tracking-[-0.03em] text-[#0D0D0D] tabular-nums font-currency inline-flex items-baseline shrink-0">
+                  <RupeeSymbol />35k–<RupeeSymbol />1L
                 </div>
-                <div className="inline-flex items-center gap-2 bg-[#1E255E] text-white rounded-full pl-3.5 sm:pl-4 pr-1.5 py-1.5 text-[12px] sm:text-[12.5px] font-normal whitespace-nowrap shrink-0">
-                  <span>TN Portal</span>
-                  <span className="w-[24px] h-[24px] rounded-full bg-white text-[#1E255E] inline-flex items-center justify-center">
-                    <Zap className="w-3.5 h-3.5 stroke-[2.2]" />
+                <div className="inline-flex items-center gap-1.5 bg-[#1E255E] text-white rounded-full pl-3.5 pr-2 py-1.5 text-[12px] font-medium whitespace-nowrap shrink-0 shadow-2xs">
+                  <span>Both Central &amp; State</span>
+                  <span className="w-[20px] h-[20px] rounded-full bg-white text-[#1E255E] inline-flex items-center justify-center">
+                    <Zap className="w-3 h-3 stroke-[2.2]" />
                   </span>
                 </div>
               </div>
-              <div className="mt-3 text-[16.5px] sm:text-[18px] text-[#6E6E6E] font-normal">
-                Potential combined subsidy (₹35,000–₹1,00,000)
+              <div className="mt-3 text-[15.5px] sm:text-[16.5px] text-[#555555] font-normal leading-snug">
+                Potential combined subsidy (<span className="font-currency font-semibold text-[#1E255E] inline-flex items-baseline"><RupeeSymbol />35,000–<RupeeSymbol />1,00,000</span>)
               </div>
-              <p className="mt-2 text-[14px] sm:text-[14.5px] leading-[1.48] text-[#7A7A7A]">
-                For eligible residential systems under the current Tamil Nadu
-                portal&apos;s 1–3 kW examples.
+              <p className="mt-2 text-[13px] sm:text-[13.5px] leading-[1.5] text-[#7A7A7A]">
+                For eligible residential systems under current central and state government scheme
               </p>
             </div>
 
-            {/* Bottom Dot-Matrix Chart */}
+            {/* Elevated Subsidy Scale Showcase */}
             <div className="pt-4">
-              <div className="grid grid-cols-14 items-end gap-1 sm:gap-[6px] h-[130px] sm:h-[148px]">
-                {DOT_CHART_COLUMNS.map((col, cIdx) => (
-                  <div
-                    key={cIdx}
-                    className="flex flex-col-reverse items-center gap-1 sm:gap-[6px]"
-                  >
-                    {col.dots.map((dotType, dIdx) => {
-                      const bgClass =
-                        dotType === 'D'
-                          ? 'bg-[#1E255E]'
-                          : dotType === 'G'
-                            ? 'bg-[#76B82A]'
-                            : 'bg-[#DCDCDC]';
-                      return (
-                        <span
-                          key={dIdx}
-                          className={`w-[11px] h-[11px] sm:w-[13px] sm:h-[13px] xl:w-[14px] xl:h-[14px] rounded-full ${bgClass} block shrink-0`}
-                        />
-                      );
-                    })}
+              <div className="bg-[#F6F7F9] rounded-[24px] p-4 sm:p-5 border border-black/[0.03]">
+                {/* Clean Top Caption */}
+                <div className="flex items-center justify-between text-[11.5px] text-[#6E6E6E] font-medium pb-3 border-b border-black/[0.06]">
+                  <span className="flex items-center gap-2 text-[#1E255E] font-semibold">
+                    <span className="w-2 h-2 rounded-full bg-[#76B82A]" />
+                    Central &amp; State Scheme
+                  </span>
+                  <span className="text-[10.5px] font-bold uppercase tracking-wider text-[#76B82A] bg-[#76B82A]/10 px-2.5 py-0.5 rounded-full">
+                    Up to 100% Subsidy
+                  </span>
+                </div>
+
+                {/* 3 Stepped Pillars with 1,00,000 Towering High */}
+                <div className="grid grid-cols-3 gap-3 items-end pt-5 pb-1">
+                  {/* Pillar 1: 1 kW */}
+                  <div className="flex flex-col items-center">
+                    <span className="text-[11.5px] sm:text-[12px] font-semibold text-[#1E255E] font-currency mb-2 tabular-nums whitespace-nowrap inline-flex items-baseline">
+                      <RupeeSymbol />35,000
+                    </span>
+                    <div className="w-full h-[40px] sm:h-[46px] bg-[#DCE2EC] hover:bg-[#CFD7E4] rounded-t-[12px] rounded-b-[6px] transition-all duration-300" />
+                    <span className="mt-2.5 text-[12px] font-medium text-[#666666]">
+                      1 kW
+                    </span>
                   </div>
-                ))}
-              </div>
-              {/* Capacity Axis Labels */}
-              <div className="grid grid-cols-14 mt-3 text-[12.5px] sm:text-[13.5px] text-[#6E6E6E] tabular-nums">
-                <span className="col-span-3 text-left">1 kW</span>
-                <span className="col-span-4 text-center">2 kW</span>
-                <span className="col-span-4 text-center">3 kW</span>
-                <span className="col-span-3 text-right">3 kW+</span>
+
+                  {/* Pillar 2: 2 kW */}
+                  <div className="flex flex-col items-center">
+                    <span className="text-[11.5px] sm:text-[12px] font-semibold text-[#1E255E] font-currency mb-2 tabular-nums whitespace-nowrap inline-flex items-baseline">
+                      <RupeeSymbol />75,000
+                    </span>
+                    <div className="w-full h-[72px] sm:h-[80px] bg-[#2A3478] hover:bg-[#232B66] rounded-t-[12px] rounded-b-[6px] transition-all duration-300 shadow-xs" />
+                    <span className="mt-2.5 text-[12px] font-medium text-[#666666]">
+                      2 kW
+                    </span>
+                  </div>
+
+                  {/* Pillar 3: 3 kW+ (Towering 1,00,000 Max Tier) */}
+                  <div className="flex flex-col items-center">
+                    <div className="flex flex-col items-center mb-1.5">
+                      <span className="text-[9px] font-extrabold uppercase tracking-wider text-white bg-[#76B82A] px-2 py-0.5 rounded-full mb-1 shadow-xs whitespace-nowrap">
+                        Max Tier
+                      </span>
+                      <span className="text-[13px] sm:text-[14px] font-bold text-[#1E255E] font-currency tabular-nums whitespace-nowrap inline-flex items-baseline">
+                        <RupeeSymbol />1,00,000
+                      </span>
+                    </div>
+                    <div className="w-full h-[120px] sm:h-[132px] bg-gradient-to-t from-[#1E255E] via-[#243075] to-[#76B82A] rounded-t-[14px] rounded-b-[6px] shadow-[0_8px_20px_rgba(30,37,94,0.22)] relative overflow-hidden transition-all duration-300 hover:brightness-105">
+                      <div className="absolute inset-x-0 top-0 h-1 bg-white/90" />
+                    </div>
+                    <span className="mt-2.5 text-[12px] font-bold text-[#0D0D0D]">
+                      3 kW+
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -838,13 +894,20 @@ export default function App() {
                 Solar Subsidies
               </span>
               <h2 className="text-[28px] sm:text-[36px] lg:text-[44px] leading-[1.2] tracking-[-0.02em] font-normal text-[#0D0D0D]">
-                Get Up to ₹1,00,000 in
+                Get Up to{' '}
+                <span className="font-currency font-medium inline-flex items-baseline">
+                  <RupeeSymbol />1,00,000
+                </span>{' '}
+                in
                 <br className="hidden sm:block" /> Combined Solar Subsidies*
               </h2>
               <p className="mt-3.5 sm:mt-4 text-[15.5px] sm:text-[16.5px] leading-[1.58] text-[#6E6E6E] max-w-[420px]">
-                Eligible households can receive up to ₹1 lakh in combined
-                Central and Tamil Nadu State Government solar subsidies, making
-                rooftop solar more affordable.
+                Eligible households can receive up to{' '}
+                <span className="inline-flex items-baseline">
+                  <RupeeSymbol />1 lakh
+                </span>{' '}
+                in combined Central and Tamil Nadu State Government solar
+                subsidies, making rooftop solar more affordable.
               </p>
             </div>
 
@@ -901,8 +964,8 @@ export default function App() {
                     <h3 className="text-[22px] sm:text-[26px] font-medium tracking-[-0.02em] text-[#0D0D0D]">
                       {tier.title}
                     </h3>
-                    <span className="text-[24px] sm:text-[28px] font-semibold text-[#1E255E] tabular-nums">
-                      {tier.amount}
+                    <span className="text-[24px] sm:text-[28px] font-semibold text-[#1E255E] tabular-nums font-currency inline-flex items-baseline">
+                      <RupeeSymbol />{tier.amount.replace('₹', '')}
                     </span>
                   </div>
                   <p className="mt-2 text-[14.5px] sm:text-[15.5px] leading-[1.52] text-[#6E6E6E] max-w-[400px]">
@@ -1060,8 +1123,8 @@ export default function App() {
                     <div className="text-[12.5px] sm:text-[13px] text-white/50">
                       Subsidy availed
                     </div>
-                    <div className="text-[15.5px] sm:text-[16.5px] font-semibold text-[#76B82A] mt-1 tabular-nums">
-                      {currentProject.subsidyAvailed}
+                    <div className="text-[15.5px] sm:text-[16.5px] font-semibold text-[#76B82A] mt-1 tabular-nums font-currency inline-flex items-baseline">
+                      <RupeeSymbol />{currentProject.subsidyAvailed.replace('₹', '')}
                     </div>
                   </div>
                 </div>
@@ -1081,7 +1144,10 @@ export default function App() {
                   </button>
 
                   <span className="text-[19px] sm:text-[22px] font-normal text-[#76B82A] tracking-[-0.01em] tabular-nums">
-                    Subsidy: {currentProject.subsidyAvailed}
+                    Subsidy:{' '}
+                    <span className="font-currency font-semibold inline-flex items-baseline">
+                      <RupeeSymbol />{currentProject.subsidyAvailed.replace('₹', '')}
+                    </span>
                   </span>
                 </div>
               </div>
@@ -1412,7 +1478,10 @@ export default function App() {
     ];
 
     return (
-      <section className="w-full bg-[#F8F8F8] py-[56px] sm:py-[72px] lg:py-[84px]">
+      <section
+        id="calculator"
+        className="w-full bg-[#F8F8F8] py-[56px] sm:py-[72px] lg:py-[84px]"
+      >
         <div className="w-[90%] sm:w-[88%] lg:w-[86%] max-w-[1380px] mx-auto">
           <div className="text-center mb-9 sm:mb-12">
             <span className="inline-block bg-white text-[#4A4A4A] text-[14px] sm:text-[15px] font-normal px-[20px] sm:px-[22px] py-[9px] sm:py-[10px] rounded-full shadow-[0_1px_3px_rgba(0,0,0,0.03)] mb-4">
@@ -1422,8 +1491,11 @@ export default function App() {
               Illustrative EMI Example
             </h2>
             <p className="mt-3 text-[15.5px] sm:text-[16.5px] leading-[1.58] text-[#6E6E6E] max-w-[640px] mx-auto">
-              Suppose a customer finances ₹1,00,000 over five years at an
-              illustrative annual interest rate of 10%.
+              Suppose a customer finances{' '}
+              <span className="inline-flex items-baseline">
+                <RupeeSymbol />1,00,000
+              </span>{' '}
+              over five years at an illustrative annual interest rate of 10%.
             </p>
           </div>
 
@@ -1436,16 +1508,19 @@ export default function App() {
                   Illustrative loan calculation only
                 </span>
                 <div className="mt-5 flex flex-wrap items-baseline gap-2.5 sm:gap-3">
-                  <span className="text-[38px] sm:text-[48px] font-medium tracking-[-0.02em] text-[#0D0D0D] tabular-nums">
-                    ₹2,125
+                  <span className="text-[38px] sm:text-[48px] font-medium tracking-[-0.02em] text-[#0D0D0D] tabular-nums font-currency inline-flex items-baseline">
+                    <RupeeSymbol />2,125
                   </span>
                   <span className="text-[15px] sm:text-[16px] text-[#6E6E6E]">
                     Approx. monthly EMI
                   </span>
                 </div>
                 <p className="mt-2.5 text-[14.5px] sm:text-[15.5px] leading-[1.55] text-[#6E6E6E]">
-                  Suppose a customer finances ₹1,00,000 over five years at an
-                  illustrative annual interest rate of 10%.
+                  Suppose a customer finances{' '}
+                  <span className="font-currency font-medium inline-flex items-baseline">
+                    <RupeeSymbol />1,00,000
+                  </span>{' '}
+                  over five years at an illustrative annual interest rate of 10%.
                 </p>
 
                 <button
@@ -1471,8 +1546,15 @@ export default function App() {
                         <CheckCircle2 className="w-4.5 h-4.5 text-[#1E255E] shrink-0 stroke-[1.8]" />
                         {item.label}
                       </span>
-                      <span className="font-semibold text-[#0D0D0D] tabular-nums">
-                        {item.value}
+                      <span className="font-semibold text-[#0D0D0D] tabular-nums font-currency inline-flex items-baseline">
+                        {item.value.startsWith('₹') ? (
+                          <>
+                            <RupeeSymbol />
+                            {item.value.replace('₹', '')}
+                          </>
+                        ) : (
+                          item.value
+                        )}
                       </span>
                     </li>
                   ))}
@@ -1502,13 +1584,17 @@ export default function App() {
                     }}
                     className="text-[13px] sm:text-[13.5px] text-[#76B82A] hover:underline cursor-pointer"
                   >
-                    Reset to ₹1,00,000 example
+                    Reset to{' '}
+                    <span className="font-currency font-medium inline-flex items-baseline">
+                      <RupeeSymbol />1,00,000
+                    </span>{' '}
+                    example
                   </button>
                 </div>
 
                 <div className="mt-5 flex flex-wrap items-baseline gap-2.5 sm:gap-3">
-                  <span className="text-[38px] sm:text-[48px] font-medium tracking-[-0.02em] text-white tabular-nums">
-                    ₹{calculatedEmi.toLocaleString('en-IN')}
+                  <span className="text-[38px] sm:text-[48px] font-medium tracking-[-0.02em] text-white tabular-nums font-currency inline-flex items-baseline">
+                    <RupeeSymbol />{calculatedEmi.toLocaleString('en-IN')}
                   </span>
                   <span className="text-[15px] sm:text-[16px] text-white/80">
                     Approx. monthly EMI
@@ -1520,8 +1606,8 @@ export default function App() {
                   <div>
                     <div className="flex justify-between text-[14.5px] sm:text-[15px] mb-2">
                       <span className="text-white/85">Loan amount</span>
-                      <span className="font-semibold text-[#76B82A] tabular-nums">
-                        ₹{loanAmount.toLocaleString('en-IN')}
+                      <span className="font-semibold text-[#76B82A] tabular-nums font-currency inline-flex items-baseline">
+                        <RupeeSymbol />{loanAmount.toLocaleString('en-IN')}
                       </span>
                     </div>
                     <input
@@ -1812,7 +1898,16 @@ export default function App() {
 
                 {isOpen && (
                   <p className="mt-3.5 text-[14.5px] sm:text-[15.5px] leading-[1.62] text-white/90 sm:pr-8">
-                    {faq.answer}
+                    {faq.answer.includes('₹') ? (
+                      faq.answer.split('₹').map((part, pIdx) => (
+                        <React.Fragment key={pIdx}>
+                          {pIdx > 0 && <RupeeSymbol />}
+                          {part}
+                        </React.Fragment>
+                      ))
+                    ) : (
+                      faq.answer
+                    )}
                   </p>
                 )}
               </div>
@@ -1823,174 +1918,7 @@ export default function App() {
     </section>
   );
 
-  // ============================================================================
-  // SECTION 11: WHAT'S YOUR SOLAR SAVINGS POTENTIAL? (PDF Page 8 + Page 1 Form)
-  // ============================================================================
-  const renderContact = () => (
-    <section
-      id="quote-form"
-      className="w-full bg-[#F8F8F8] pt-[52px] sm:pt-[68px] pb-[68px] sm:pb-[92px]"
-    >
-      <div className="w-[90%] sm:w-[88%] lg:w-[86%] max-w-[1380px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-stretch">
-        {/* Left Column (5 cols): Heading + Direct Contact Info */}
-        <div className="lg:col-span-5 flex flex-col justify-between py-1">
-          <div>
-            <span className="inline-block bg-white text-[#4A4A4A] text-[14px] sm:text-[15px] font-normal px-[20px] sm:px-[22px] py-[9px] sm:py-[10px] rounded-full shadow-[0_1px_3px_rgba(0,0,0,0.03)] mb-4">
-              Solar Estimate
-            </span>
-            <h2 className="text-[28px] sm:text-[36px] lg:text-[44px] leading-[1.2] tracking-[-0.02em] font-normal text-[#0D0D0D]">
-              What&apos;s Your Solar Savings Potential?
-            </h2>
-            <p className="mt-3.5 sm:mt-4 text-[15.5px] sm:text-[16.5px] leading-[1.58] text-[#6E6E6E] max-w-[430px]">
-              Share your details to explore eligible subsidies and estimate your
-              savings with NIRT.
-            </p>
-          </div>
 
-          <div className="mt-8 sm:mt-10 lg:mt-0 space-y-4 sm:space-y-5">
-            <div className="flex items-center gap-3.5">
-              <span className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white inline-flex items-center justify-center text-[#0D0D0D] shadow-[0_1px_3px_rgba(0,0,0,0.04)] shrink-0">
-                <Mail className="w-5 h-5 stroke-[1.8]" />
-              </span>
-              <div>
-                <div className="text-[14px] sm:text-[14.5px] font-medium text-[#0D0D0D]">
-                  Email
-                </div>
-                <a
-                  href="mailto:nirtinfo@gmail.com"
-                  className="text-[15px] sm:text-[15.5px] text-[#6E6E6E] hover:text-[#1E255E] transition-colors break-all"
-                >
-                  nirtinfo@gmail.com
-                </a>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3.5">
-              <span className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white inline-flex items-center justify-center text-[#0D0D0D] shadow-[0_1px_3px_rgba(0,0,0,0.04)] shrink-0">
-                <Phone className="w-5 h-5 stroke-[1.8]" />
-              </span>
-              <div>
-                <div className="text-[14px] sm:text-[14.5px] font-medium text-[#0D0D0D]">
-                  Phone
-                </div>
-                <a
-                  href="tel:8048035697"
-                  className="text-[15px] sm:text-[15.5px] text-[#6E6E6E] hover:text-[#1E255E] transition-colors tabular-nums"
-                >
-                  8048035697
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Right Column (7 cols): White Form Card (PDF Page 1 Form: Name, District, Contact number, Bi monthly bill, CTA: Get My solar estimate) */}
-        <div className="lg:col-span-7">
-          <form
-            onSubmit={handleFormSubmit}
-            className="bg-white rounded-[24px] sm:rounded-[28px] p-6 sm:p-8 lg:p-10 shadow-[0_1px_4px_rgba(0,0,0,0.02)]"
-          >
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-              <div>
-                <label className="block text-[14px] sm:text-[14.5px] font-medium text-[#222222] mb-2">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={formData.name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
-                  }
-                  placeholder="Enter your full name"
-                  className="w-full rounded-full border border-[#ECECEC] bg-[#FAFAFA] px-5 py-3.5 text-[15px] text-[#0D0D0D] placeholder:text-[#A0A0A0] focus:outline-none focus:border-[#1E255E]"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[14px] sm:text-[14.5px] font-medium text-[#222222] mb-2">
-                  District
-                </label>
-                <div className="relative w-full">
-                  <select
-                    required
-                    aria-label="District"
-                    value={formData.district}
-                    onChange={(e) =>
-                      setFormData({ ...formData, district: e.target.value })
-                    }
-                    className={`w-full appearance-none rounded-full border border-[#ECECEC] bg-[#FAFAFA] pl-5 pr-11 py-3.5 text-[15px] focus:outline-none focus:border-[#1E255E] cursor-pointer ${
-                      formData.district ? 'text-[#0D0D0D]' : 'text-[#A0A0A0]'
-                    }`}
-                  >
-                    <option value="" disabled>
-                      Select your district
-                    </option>
-                    {DISTRICTS.map((district) => (
-                      <option
-                        key={district}
-                        value={district}
-                        className="text-[#0D0D0D] bg-white"
-                      >
-                        {district}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-[#7A7A7A]" />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-[14px] sm:text-[14.5px] font-medium text-[#222222] mb-2">
-                  Contact number
-                </label>
-                <input
-                  type="tel"
-                  required
-                  value={formData.contactNumber}
-                  onChange={(e) =>
-                    setFormData({ ...formData, contactNumber: e.target.value })
-                  }
-                  placeholder="Enter 10-digit mobile number"
-                  className="w-full rounded-full border border-[#ECECEC] bg-[#FAFAFA] px-5 py-3.5 text-[15px] text-[#0D0D0D] placeholder:text-[#A0A0A0] focus:outline-none focus:border-[#1E255E]"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[14px] sm:text-[14.5px] font-medium text-[#222222] mb-2">
-                  Bi monthly bill
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={formData.biMonthlyBill}
-                  onChange={(e) =>
-                    setFormData({ ...formData, biMonthlyBill: e.target.value })
-                  }
-                  placeholder="e.g. ₹3,500"
-                  className="w-full rounded-full border border-[#ECECEC] bg-[#FAFAFA] px-5 py-3.5 text-[15px] text-[#0D0D0D] placeholder:text-[#A0A0A0] focus:outline-none focus:border-[#1E255E]"
-                />
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              className="group relative mt-6 sm:mt-7 w-full py-3.5 sm:py-4 pl-5 pr-12 sm:px-7 rounded-full bg-[#0D0D0D] hover:bg-[#222222] text-white text-[15px] sm:text-[16px] font-medium inline-flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] shadow-[0_6px_18px_rgba(0,0,0,0.16)] cursor-pointer"
-            >
-              <span className="transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-3">
-                {formStatus === 'submitted'
-                  ? 'Solar Estimate Request Received ✓'
-                  : 'Get My solar estimate'}
-              </span>
-              <span className="absolute right-2.5 sm:right-3 group-hover:right-[calc(100%-44px)] top-1/2 -translate-y-1/2 w-[32px] h-[32px] sm:w-[34px] sm:h-[34px] rounded-full bg-white text-[#0D0D0D] inline-flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:rotate-45">
-                <ArrowUpRight className="w-4 h-4 stroke-[2.2]" />
-              </span>
-            </button>
-          </form>
-        </div>
-      </div>
-    </section>
-  );
 
   // ============================================================================
   // SECTION 12: DARK FOOTER WITH EXACT NIRT LOGO
@@ -2070,7 +1998,7 @@ export default function App() {
             </div>
             <div>
               <a
-                href="#quote-form"
+                href="#calculator"
                 className="text-white/85 hover:text-white transition-colors"
               >
                 EMI Calculator
@@ -2081,12 +2009,13 @@ export default function App() {
           <div className="lg:col-span-3 space-y-2.5">
             <div className="text-white/45 font-normal mb-3">Policies</div>
             <div>
-              <a
-                href="#quote-form"
-                className="text-white/85 hover:text-white transition-colors"
+              <button
+                type="button"
+                onClick={() => scrollToQuote()}
+                className="text-white/85 hover:text-white transition-colors text-left cursor-pointer"
               >
-                Privacy Policy
-              </a>
+                Get Free Estimate
+              </button>
             </div>
             <div>
               <a
@@ -2151,7 +2080,6 @@ export default function App() {
           {renderPricing()}
           {renderTestimonials()}
           {renderFaqs()}
-          {renderContact()}
         </main>
         {renderFooter()}
       </div>
@@ -2278,19 +2206,38 @@ export default function App() {
                   <label className="block text-[12.5px] font-medium text-[#222222] mb-1.5">
                     Bi monthly bill
                   </label>
-                  <input
-                    type="text"
-                    required
-                    value={popupFormData.biMonthlyBill}
-                    onChange={(e) =>
-                      setPopupFormData({
-                        ...popupFormData,
-                        biMonthlyBill: e.target.value,
-                      })
-                    }
-                    placeholder="Your bi-monthly EB bill amount (₹)"
-                    className="w-full rounded-full border border-[#D5D8DC] bg-[#FAFAFA] hover:bg-white focus:bg-white px-5 py-3.5 text-[14.5px] font-medium text-[#0D0D0D] placeholder:text-[#7A7A7A] focus:outline-none focus:border-[#1E255E] focus:ring-4 focus:ring-[#1E255E]/10 transition-all"
-                  />
+                  <div className="relative w-full">
+                    <select
+                      required
+                      aria-label="Bi-monthly bill"
+                      value={popupFormData.biMonthlyBill}
+                      onChange={(e) =>
+                        setPopupFormData({
+                          ...popupFormData,
+                          biMonthlyBill: e.target.value,
+                        })
+                      }
+                      className={`w-full appearance-none rounded-full border border-[#D5D8DC] bg-[#FAFAFA] hover:bg-white focus:bg-white pl-5 pr-10 py-3.5 text-[14.5px] font-medium font-currency focus:outline-none focus:border-[#1E255E] focus:ring-4 focus:ring-[#1E255E]/10 transition-all cursor-pointer ${
+                        popupFormData.biMonthlyBill
+                          ? 'text-[#0D0D0D]'
+                          : 'text-[#7A7A7A]'
+                      }`}
+                    >
+                      <option value="" disabled>
+                        Select bi-monthly bill
+                      </option>
+                      {BILL_RANGES.map((range) => (
+                        <option
+                          key={range}
+                          value={range}
+                          className="text-[#0D0D0D] bg-white font-normal"
+                        >
+                          {range}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDown className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#7A7A7A]" />
+                  </div>
                 </div>
 
                 <button
@@ -2373,16 +2320,16 @@ export default function App() {
                 <span className="text-white/45 block text-[10px]">
                   Subsidy availed
                 </span>
-                <span className="font-semibold text-[#76B82A]">
-                  {currentProject.subsidyAvailed}
+                <span className="font-semibold text-[#76B82A] font-currency inline-flex items-baseline">
+                  <RupeeSymbol />{currentProject.subsidyAvailed.replace('₹', '')}
                 </span>
               </div>
             </div>
             <div className="mt-5 flex items-center justify-between pt-4 border-t border-white/10">
               <div>
                 <div className="text-[10px] text-white/50">Subsidy Availed</div>
-                <div className="text-[20px] font-semibold text-[#76B82A] tabular-nums">
-                  {currentProject.subsidyAvailed}
+                <div className="text-[20px] font-semibold text-[#76B82A] tabular-nums font-currency inline-flex items-baseline">
+                  <RupeeSymbol />{currentProject.subsidyAvailed.replace('₹', '')}
                 </div>
               </div>
               <button
