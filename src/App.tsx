@@ -279,10 +279,10 @@ function HeroNirtBackdrop() {
     <div className="absolute inset-0 w-full h-full overflow-hidden">
       {/* Mobile view hero image */}
       <img
-        src="/assets/aistudio/main_phn_3527aeac.webp"
+        src="/assets/aistudio/main_phn_429ac601.webp"
         alt="NIRT Renewable Energy Solar Rooftop"
         referrerPolicy="no-referrer"
-        className="block sm:hidden w-full h-full object-cover object-center filter brightness-[0.85] contrast-[1.02]"
+        className="block sm:hidden w-full h-full object-cover object-top filter brightness-[0.98] contrast-[1.02]"
       />
       {/* Tablet & Desktop view hero image */}
       <img
@@ -609,15 +609,16 @@ export default function App() {
       className="relative w-full overflow-hidden bg-[#1e73b3] select-none"
     >
       {/* Full-Bleed Hero Container responsive across mobile, tablet, and desktop */}
-      <div className="relative w-full lg:aspect-[16/10] min-h-[680px] sm:min-h-[760px] lg:min-h-[880px] lg:max-h-[1040px] flex flex-col justify-end">
+      <div className="relative w-full lg:aspect-[16/10] min-h-[820px] sm:min-h-[760px] lg:min-h-[880px] lg:max-h-[1040px] flex flex-col justify-end">
         <HeroNirtBackdrop />
 
-        {/* Subtle Bottom Contrast Scrim for Crisp White Typography */}
-        <div className="absolute inset-x-0 bottom-0 h-[62%] sm:h-[52%] lg:h-[48%] bg-gradient-to-t from-black/65 via-black/25 to-transparent pointer-events-none" />
+        {/* Subtle Bottom Contrast Scrim - lower on mobile to keep banner graphics bright */}
+        <div className="absolute inset-x-0 bottom-0 h-[40%] sm:h-[52%] lg:h-[48%] bg-gradient-to-t from-black/75 via-black/20 to-transparent pointer-events-none" />
 
         {/* Bottom Overlay Flexbox Row + Hero Inline Estimate Form */}
-        <div className="relative z-10 w-[90%] sm:w-[88%] lg:w-[86%] max-w-[1380px] mx-auto flex flex-col justify-end pb-[28px] sm:pb-[44px] lg:pb-[56px] pt-[210px] sm:pt-[260px] lg:pt-32">
-          <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-4 sm:gap-6 lg:gap-12">
+        <div className="relative z-10 w-[90%] sm:w-[88%] lg:w-[86%] max-w-[1380px] mx-auto flex flex-col justify-end pb-[28px] sm:pb-[44px] lg:pb-[56px] pt-[380px] sm:pt-[260px] lg:pt-32">
+          {/* Headline and copy: displayed on sm+ so mobile displays the banner image's own Tamil headline cleanly */}
+          <div className="hidden sm:flex flex-col lg:flex-row items-start lg:items-end justify-between gap-4 sm:gap-6 lg:gap-12">
             {/* Bottom-Left Headline (PDF Page 1: Get Up to ₹1,00,000 for Solar) */}
             <div>
               <h1 className="text-white font-normal text-[34px] sm:text-[48px] md:text-[56px] lg:text-[64px] leading-[1.14] tracking-[-0.02em] max-w-[680px]">
@@ -639,10 +640,15 @@ export default function App() {
             </div>
           </div>
 
+          {/* Screen reader title for mobile accessibility */}
+          <h1 className="sr-only sm:hidden">
+            Get Up to ₹1,00,000 for Solar - NIRT Renewable Energy
+          </h1>
+
           {/* PDF Page 1 Quick Estimate Form Bar (Highlighted with glowing border & eligibility badge) */}
           <form
             onSubmit={handleFormSubmit}
-            className="mt-5 sm:mt-7 lg:mt-8 bg-white/98 backdrop-blur-xl rounded-[24px] sm:rounded-[28px] p-4 sm:p-5 lg:p-6 shadow-[0_24px_70px_rgba(0,0,0,0.38),0_0_0_1px_rgba(255,255,255,0.9),0_0_40px_rgba(255,255,255,0.35)] border-2 border-white ring-4 ring-white/25 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_1fr_auto] gap-3 sm:gap-3.5 items-center"
+            className="mt-2 sm:mt-7 lg:mt-8 bg-white/98 backdrop-blur-xl rounded-[24px] sm:rounded-[28px] p-4 sm:p-5 lg:p-6 shadow-[0_24px_70px_rgba(0,0,0,0.38),0_0_0_1px_rgba(255,255,255,0.9),0_0_40px_rgba(255,255,255,0.35)] border-2 border-white ring-4 ring-white/25 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_1fr_auto] gap-3 sm:gap-3.5 items-center"
           >
             {/* Form Highlight Header Banner - Mobile Responsive */}
             <div className="col-span-1 sm:col-span-2 lg:col-span-full flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2.5 mb-0.5 border-b border-black/5 w-full">
