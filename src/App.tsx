@@ -105,10 +105,34 @@ export function RupeeSymbol({
 }
 
 const CUSTOMER_AVATARS = [
-  { initial: 'NR', name: 'Nataraj A.', bg: 'bg-[#1E255E]' },
-  { initial: 'KR', name: 'Kirit Raja', bg: 'bg-[#76B82A]' },
-  { initial: 'RS', name: 'Raja R. S.', bg: 'bg-[#0D0D0D]' },
-  { initial: 'PK', name: 'Priya K.', bg: 'bg-[#2E5B88]' },
+  {
+    initial: 'NA',
+    name: 'Nataraj A.',
+    bg: 'bg-[#1E255E]',
+    image:
+      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&h=200&q=80',
+  },
+  {
+    initial: 'KR',
+    name: 'Kirit Raja',
+    bg: 'bg-[#76B82A]',
+    image:
+      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&h=200&q=80',
+  },
+  {
+    initial: 'RS',
+    name: 'Raja R. S.',
+    bg: 'bg-[#0D0D0D]',
+    image:
+      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&h=200&q=80',
+  },
+  {
+    initial: 'PK',
+    name: 'Priya K.',
+    bg: 'bg-[#2E5B88]',
+    image:
+      'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&h=200&q=80',
+  },
 ];
 
 function CustomerAvatarGroup({
@@ -136,9 +160,23 @@ function CustomerAvatarGroup({
         <div
           key={avatar.name}
           style={{ zIndex: idx + 1 }}
-          className={`relative ${sizeClass} rounded-full overflow-hidden ${ringClass} ${avatar.bg} text-white font-semibold text-[12px] sm:text-[13px] flex items-center justify-center shrink-0 transition-transform duration-200 hover:-translate-y-0.5`}
+          className={`relative ${sizeClass} rounded-full overflow-hidden ${ringClass} ${avatar.bg} text-white font-semibold text-[12px] sm:text-[13px] flex items-center justify-center shrink-0 transition-transform duration-200 hover:-translate-y-0.5 hover:z-20`}
         >
-          {avatar.initial}
+          {avatar.image ? (
+            <img
+              src={avatar.image}
+              alt={avatar.name}
+              loading="lazy"
+              referrerPolicy="no-referrer"
+              className="w-full h-full object-cover block"
+              onError={(e) => {
+                (e.currentTarget as HTMLElement).style.display = 'none';
+              }}
+            />
+          ) : null}
+          <span className="absolute inset-0 flex items-center justify-center -z-10">
+            {avatar.initial}
+          </span>
         </div>
       ))}
     </div>
@@ -793,9 +831,8 @@ export default function App() {
 
           {/* Card 2: Solid Black Card with Lifespan Metric */}
           <div className="relative rounded-[26px] sm:rounded-[30px] overflow-hidden bg-black text-white p-6 sm:p-7 xl:p-8 flex flex-col justify-between w-full h-full min-h-[490px] sm:min-h-[510px] shadow-sm border border-neutral-800/60">
-            {/* Top Row: Avatars + Pill */}
-            <div className="relative z-10 flex items-center justify-between gap-2.5">
-              <CustomerAvatarGroup variant="dark" count={3} />
+            {/* Top Row: Pill */}
+            <div className="relative z-10 flex items-center justify-end gap-2.5">
               <div className="inline-flex items-center gap-2 bg-[#1F1F1F]/90 backdrop-blur-sm border border-white/10 rounded-full pl-3.5 sm:pl-4 pr-1.5 py-1.5 text-[12px] sm:text-[12.5px] text-white/90 whitespace-nowrap">
                 <span>Grid-Connected</span>
                 <span className="w-[24px] h-[24px] rounded-full bg-black/50 border border-white/15 inline-flex items-center justify-center">
@@ -1524,21 +1561,18 @@ export default function App() {
                 </span>
               </button>
 
-              {/* 4 Overlapping Customer Avatars + 5 Stars + 500+ Happy Customers */}
-              <div className="flex items-center gap-3.5">
-                <CustomerAvatarGroup variant="light" count={4} />
-                <div>
-                  <div className="flex items-center gap-1 text-[#0D0D0D]">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className="w-4 h-4 fill-[#0D0D0D] text-[#0D0D0D]"
-                      />
-                    ))}
-                  </div>
-                  <div className="text-[13.5px] sm:text-[14px] text-[#666666] font-normal mt-1 whitespace-nowrap">
-                    500+ Happy Customers
-                  </div>
+              {/* 5 Stars + 500+ Happy Customers */}
+              <div className="flex items-center gap-2.5">
+                <div className="flex items-center gap-1 text-[#0D0D0D]">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className="w-4 h-4 fill-[#0D0D0D] text-[#0D0D0D]"
+                    />
+                  ))}
+                </div>
+                <div className="text-[13.5px] sm:text-[14px] text-[#666666] font-normal whitespace-nowrap">
+                  500+ Happy Customers
                 </div>
               </div>
             </div>
@@ -1918,8 +1952,20 @@ export default function App() {
 
               <div className="mt-5 flex items-center justify-between gap-2">
                 <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-full bg-[#1E255E] text-white flex items-center justify-center font-semibold text-[14px] shrink-0 shadow-xs">
-                    NA
+                  <div className="relative w-11 h-11 rounded-full overflow-hidden bg-[#1E255E] text-white flex items-center justify-center font-semibold text-[14px] shrink-0 shadow-xs border border-black/5">
+                    <img
+                      src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&h=200&q=80"
+                      alt="Nataraj A"
+                      loading="lazy"
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover block"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLElement).style.display = 'none';
+                      }}
+                    />
+                    <span className="absolute inset-0 flex items-center justify-center -z-10">
+                      NA
+                    </span>
                   </div>
                   <div>
                     <div className="text-[15px] font-semibold text-[#0D0D0D] leading-tight">
@@ -1959,8 +2005,20 @@ export default function App() {
 
               <div className="mt-5 flex items-center justify-between gap-2">
                 <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-full bg-[#76B82A] text-white flex items-center justify-center font-semibold text-[14px] shrink-0 shadow-xs">
-                    KR
+                  <div className="relative w-11 h-11 rounded-full overflow-hidden bg-[#76B82A] text-white flex items-center justify-center font-semibold text-[14px] shrink-0 shadow-xs border border-black/5">
+                    <img
+                      src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&h=200&q=80"
+                      alt="KIRIT RAJA"
+                      loading="lazy"
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover block"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLElement).style.display = 'none';
+                      }}
+                    />
+                    <span className="absolute inset-0 flex items-center justify-center -z-10">
+                      KR
+                    </span>
                   </div>
                   <div>
                     <div className="text-[15px] font-semibold text-[#0D0D0D] leading-tight">
@@ -1987,8 +2045,20 @@ export default function App() {
 
               <div className="mt-5 flex items-center justify-between gap-2">
                 <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-full bg-[#0D0D0D] text-white flex items-center justify-center font-semibold text-[14px] shrink-0 shadow-xs">
-                    RS
+                  <div className="relative w-11 h-11 rounded-full overflow-hidden bg-[#0D0D0D] text-white flex items-center justify-center font-semibold text-[14px] shrink-0 shadow-xs border border-black/5">
+                    <img
+                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&h=200&q=80"
+                      alt="RAJA R S"
+                      loading="lazy"
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover block"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLElement).style.display = 'none';
+                      }}
+                    />
+                    <span className="absolute inset-0 flex items-center justify-center -z-10">
+                      RS
+                    </span>
                   </div>
                   <div>
                     <div className="text-[15px] font-semibold text-[#0D0D0D] leading-tight">
